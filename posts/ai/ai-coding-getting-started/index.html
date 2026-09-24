@@ -1,0 +1,332 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="chirpy-light"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Astro v6.2.2"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f6f7f8"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e"><link rel="icon" type="image/x-icon"><link rel="alternate" type="application/rss+xml" title="KN郑某某 — RSS" href="/rss.xml"><title>AI 编程入门指南 — KN郑某某</title><meta name="description" content="讲解如何高效使用 AI 辅助编程，从 AGENTS.md 编写到工作流实践，涵盖核心概念、计划模式、规则与技能等关键环节。"><link rel="canonical" href="https://izqy.top/posts/ai/ai-coding-getting-started/"><link rel="alternate" type="application/rss+xml" title="KN郑某某 — RSS" href="/rss.xml"><link rel="sitemap" type="application/xml" href="/sitemap-index.xml"><meta property="og:site_name" content="KN郑某某"><meta property="og:title" content="AI 编程入门指南 — KN郑某某"><meta property="og:description" content="讲解如何高效使用 AI 辅助编程，从 AGENTS.md 编写到工作流实践，涵盖核心概念、计划模式、规则与技能等关键环节。"><meta property="og:type" content="article"><meta property="og:url" content="https://izqy.top/posts/ai/ai-coding-getting-started/"><meta property="og:image" content="https://izqy.top/og/ai/ai-coding-getting-started.png"><meta property="og:locale" content="zh_CN"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="AI 编程入门指南 — KN郑某某"><meta name="twitter:description" content="讲解如何高效使用 AI 辅助编程，从 AGENTS.md 编写到工作流实践，涵盖核心概念、计划模式、规则与技能等关键环节。"><meta name="twitter:image" content="https://izqy.top/og/ai/ai-coding-getting-started.png"><meta property="article:published_time" content="2026-05-12T00:00:00.000Z"><meta property="article:tag" content="AI"><meta property="article:tag" content="Trae"><meta property="article:tag" content="AGENTS.md"><meta property="article:tag" content="开发效率"><style>@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6";src:url("/_astro/fonts/97b31e56694e24bd.woff2") format("woff2");font-display:swap;font-weight:400;font-style:normal;}@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6";src:url("/_astro/fonts/e663efc310bb5c38.woff2") format("woff2");font-display:swap;font-weight:600;font-style:normal;}@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6";src:url("/_astro/fonts/2b0363f6005b81b6.woff2") format("woff2");font-display:swap;font-weight:700;font-style:normal;}@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6";src:url("/_astro/fonts/de49d90087fe68ed.woff2") format("woff2");font-display:swap;font-weight:900;font-style:normal;}@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6 fallback: Arial";src:local("Arial");font-display:swap;font-weight:400;font-style:normal;size-adjust:93.7639%;ascent-override:109.2105%;descent-override:42.6604%;line-gap-override:0%;}@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6 fallback: Arial";src:local("Arial");font-display:swap;font-weight:600;font-style:normal;size-adjust:93.7639%;ascent-override:109.2105%;descent-override:42.6604%;line-gap-override:0%;}@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6 fallback: Arial";src:local("Arial");font-display:swap;font-weight:700;font-style:normal;size-adjust:93.7639%;ascent-override:109.2105%;descent-override:42.6604%;line-gap-override:0%;}@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6 fallback: Arial";src:local("Arial");font-display:swap;font-weight:900;font-style:normal;size-adjust:93.7639%;ascent-override:109.2105%;descent-override:42.6604%;line-gap-override:0%;}:root{--font-source-sans-3:"Source Sans 3-00d13350b9cfb9c6","Source Sans 3-00d13350b9cfb9c6 fallback: Arial",sans-serif;}</style><style>@font-face{font-family:Lato-f725e5f983dcbf80;src:url("/_astro/fonts/cb5d3ffa9141e536.woff2") format("woff2");font-display:swap;font-weight:300;font-style:normal;}@font-face{font-family:Lato-f725e5f983dcbf80;src:url("/_astro/fonts/84684321131d27b4.woff2") format("woff2");font-display:swap;font-weight:400;font-style:normal;}@font-face{font-family:"Lato-f725e5f983dcbf80 fallback: Arial";src:local("Arial");font-display:swap;font-weight:300;font-style:normal;size-adjust:94.9976%;ascent-override:103.8974%;descent-override:22.4216%;line-gap-override:0%;}@font-face{font-family:"Lato-f725e5f983dcbf80 fallback: Arial";src:local("Arial");font-display:swap;font-weight:400;font-style:normal;size-adjust:94.9976%;ascent-override:103.8974%;descent-override:22.4216%;line-gap-override:0%;}:root{--font-lato:Lato-f725e5f983dcbf80,"Lato-f725e5f983dcbf80 fallback: Arial",sans-serif;}</style><style>@font-face{font-family:"JetBrains Mono-1e7486e83f660c57";src:url("/_astro/fonts/7b334a93f5470935.woff2") format("woff2");font-display:swap;font-weight:400;font-style:normal;}@font-face{font-family:"JetBrains Mono-1e7486e83f660c57";src:url("/_astro/fonts/23f2cf21df1909b5.woff2") format("woff2");font-display:swap;font-weight:600;font-style:normal;}@font-face{font-family:"JetBrains Mono-1e7486e83f660c57 fallback: Arial";src:local("Arial");font-display:swap;font-weight:400;font-style:normal;size-adjust:134.5893%;ascent-override:75.7861%;descent-override:22.29%;line-gap-override:0%;}@font-face{font-family:"JetBrains Mono-1e7486e83f660c57 fallback: Arial";src:local("Arial");font-display:swap;font-weight:600;font-style:normal;size-adjust:134.5893%;ascent-override:75.7861%;descent-override:22.29%;line-gap-override:0%;}:root{--font-jetbrains-mono:"JetBrains Mono-1e7486e83f660c57","JetBrains Mono-1e7486e83f660c57 fallback: Arial",sans-serif;}</style><link rel="preload" href="/_astro/fonts/7b334a93f5470935.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/_astro/fonts/23f2cf21df1909b5.woff2" as="font" type="font/woff2" crossorigin><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+      (function () {
+        function applyTheme() {
+          try {
+            var stored = localStorage.getItem('theme');
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            var valid = stored === 'chirpy-dark' || stored === 'chirpy-light';
+            var theme = valid ? stored : prefersDark ? 'chirpy-dark' : 'chirpy-light';
+            if (!valid && stored) localStorage.setItem('theme', theme);
+            document.documentElement.setAttribute('data-theme', theme);
+          } catch {
+            /* ignore */
+          }
+        }
+        applyTheme();
+        // Re-apply after view transitions swap in a fresh <html data-theme>.
+        document.addEventListener('astro:after-swap', applyTheme);
+      })();
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.-ozoYhNg.css">
+<link rel="stylesheet" href="/_astro/MathStyles.HM2DiD67.css"></head> <body> <a href="#main" class="focus:bg-primary focus:text-primary-content sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:px-3 focus:py-2"> 跳转到内容 </a> <aside id="sidebar" class="chirpy-sidebar" aria-label="Sidebar">  <header class="flex w-full flex-col items-center pt-4 pb-6 text-center"> <a href="/" class="flex flex-col items-center" aria-label="KN郑某某"> <span class="border-base-100 block h-28 w-28 overflow-hidden rounded-full border-4 shadow-sm transition hover:scale-[1.02]" style="background:linear-gradient(135deg, var(--color-primary), color-mix(in oklab, var(--color-primary) 70%, white));"> <img src="/_astro/avatar.Ck_wogE8_Nstg3.webp" srcset="/_astro/avatar.Ck_wogE8_Nstg3.webp 112w, /_astro/avatar.Ck_wogE8_HAsU2.webp 224w" alt="KN郑某某" loading="eager" decoding="async" sizes="(min-width: 112px) 112px, 100vw" data-astro-image="constrained" data-astro-image-fit="cover" data-astro-image-pos="center" style="object-position: center" width="112" height="112" class="h-full w-full object-cover"> </span> <span class="text-base-content hover:text-primary mt-4 text-xl font-semibold tracking-wide"> KN郑某某 </span> </a> <p class="text-base-content/70 mt-1 max-w-56 text-sm italic">程序员的那些年</p> </header>  <nav class="chirpy-nav flex-1" aria-label="Main"> <ul class="contents flex-col gap-0.5"> <li> <a href="/" class="chirpy-nav-link"> <svg width="16" height="16" data-icon="lucide:home">   <symbol id="ai:lucide:home" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></g></symbol><use href="#ai:lucide:home"></use>  </svg> <span>首页</span> </a> </li><li> <a href="/categories" class="chirpy-nav-link"> <svg width="16" height="16" data-icon="lucide:layers">   <symbol id="ai:lucide:layers" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></g></symbol><use href="#ai:lucide:layers"></use>  </svg> <span>分类</span> </a> </li><li> <a href="/tags" class="chirpy-nav-link"> <svg width="16" height="16" data-icon="lucide:tag">   <symbol id="ai:lucide:tag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></g></symbol><use href="#ai:lucide:tag"></use>  </svg> <span>标签</span> </a> </li><li> <a href="/archives" class="chirpy-nav-link"> <svg width="16" height="16" data-icon="lucide:archive">   <symbol id="ai:lucide:archive" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8m-10 4h4"/></g></symbol><use href="#ai:lucide:archive"></use>  </svg> <span>归档</span> </a> </li><li> <a href="/about" class="chirpy-nav-link"> <svg width="16" height="16" data-icon="lucide:info">   <symbol id="ai:lucide:info" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></g></symbol><use href="#ai:lucide:info"></use>  </svg> <span>关于</span> </a> </li> </ul> </nav>  <div class="border-base-300 mt-4 flex w-full flex-wrap items-center justify-center gap-2 border-t pt-4"> <button type="button" class="chirpy-social" data-theme-toggle aria-label="切换主题" title="切换主题"> <span data-theme-icon="light" class="hidden"> <svg width="18" height="18" aria-label="浅色" role="img" data-icon="lucide:sun">   <symbol id="ai:lucide:sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></g></symbol><use href="#ai:lucide:sun"></use>  </svg> </span> <span data-theme-icon="dark" class="hidden"> <svg width="18" height="18" aria-label="深色" role="img" data-icon="lucide:moon">   <symbol id="ai:lucide:moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></symbol><use href="#ai:lucide:moon"></use>  </svg> </span> </button> <script type="module">const d="theme";function i(){return document.documentElement.getAttribute("data-theme")??"chirpy-light"}function r(e,t=!0){if(document.documentElement.setAttribute("data-theme",e),t)try{localStorage.setItem(d,e)}catch{}s(e),document.dispatchEvent(new CustomEvent("theme-change",{detail:{theme:e}}))}function l(e,t){const c=typeof document.startViewTransition=="function",o=window.matchMedia("(prefers-reduced-motion: reduce)").matches;if(!c||o||!t){r(e);return}const n=document.documentElement;n.style.setProperty("--theme-x",`${t.x}px`),n.style.setProperty("--theme-y",`${t.y}px`);const a=Math.max(t.x,window.innerWidth-t.x),h=Math.max(t.y,window.innerHeight-t.y),m=Math.hypot(a,h);n.style.setProperty("--theme-radius",`${m}px`),n.dataset.themeAnim=e==="chirpy-dark"?"to-dark":"to-light",document.startViewTransition(()=>{r(e)}).finished.finally(()=>{delete n.dataset.themeAnim})}function s(e){document.querySelectorAll("[data-theme-icon]").forEach(t=>{const c=e==="chirpy-dark"?"light":"dark";t.classList.toggle("hidden",t.dataset.themeIcon!==c)})}function u(){s(i()),document.querySelectorAll("[data-theme-toggle]").forEach(t=>{t.addEventListener("click",c=>{const o=i()==="chirpy-dark"?"chirpy-light":"chirpy-dark",n=t.getBoundingClientRect(),a={x:c.clientX||n.left+n.width/2,y:c.clientY||n.top+n.height/2};l(o,a)})}),window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",t=>{try{if(localStorage.getItem(d))return}catch{}r(t.matches?"chirpy-dark":"chirpy-light",!1)})}document.addEventListener("astro:page-load",u);</script> <a href="https://github.com/imknn" rel="noopener" class="chirpy-social" aria-label="GitHub" target="_blank"> <svg width="16" height="16" data-icon="simple-icons:github">   <symbol id="ai:simple-icons:github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol><use href="#ai:simple-icons:github"></use>  </svg> </a><a href="/rss.xml" rel="noopener" class="chirpy-social" aria-label="RSS" target="_blank"> <svg width="16" height="16" data-icon="lucide:rss">   <symbol id="ai:lucide:rss" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></g></symbol><use href="#ai:lucide:rss"></use>  </svg> </a> </div> </aside>  <button type="button" data-sidebar-mask class="fixed inset-0 z-30 hidden bg-black/40 lg:hidden" aria-label="Close sidebar" tabindex="-1"></button> <script type="module">function o(){const e=document.getElementById("sidebar"),d=document.querySelector("[data-sidebar-mask]");if(!e||!d)return;function n(){e?.classList.add("is-open"),d?.classList.remove("hidden"),document.body.style.overflow="hidden"}function s(){e?.classList.remove("is-open"),d?.classList.add("hidden"),document.body.style.overflow=""}document.querySelectorAll("[data-sidebar-toggle]").forEach(t=>{t.addEventListener("click",()=>{e?.classList.contains("is-open")?s():n()})}),d.addEventListener("click",s),document.addEventListener("keydown",t=>{t.key==="Escape"&&s()}),e.querySelectorAll("a").forEach(t=>t.addEventListener("click",()=>{window.matchMedia("(max-width: 1023px)").matches&&s()}))}document.addEventListener("astro:page-load",o);</script> <div class="chirpy-main-wrapper"> <div class="chirpy-shell"> <header class="chirpy-topbar" aria-label="Top Bar"> <div class="flex flex-1 items-center gap-2 px-1"> <button type="button" data-sidebar-toggle class="btn btn-ghost btn-sm btn-square lg:hidden" aria-label="切换菜单"> <svg width="18" height="18" data-icon="lucide:menu">   <symbol id="ai:lucide:menu" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5h16M4 12h16M4 19h16"/></symbol><use href="#ai:lucide:menu"></use>  </svg> </button> <nav aria-label="Breadcrumb" class="text-base-content/70 hidden truncate text-sm sm:block"> <ol class="flex items-center gap-1"> <li> <a href="/" class="hover:text-primary">首页</a> </li> <li class="flex items-center gap-1 truncate"> <span aria-hidden="true" class="text-base-content/40">
+/
+</span> <a href="/" class="hover:text-primary"> 文章 </a> </li><li class="flex items-center gap-1 truncate"> <span aria-hidden="true" class="text-base-content/40">
+/
+</span> <span class="text-base-content truncate font-medium">AI 编程入门指南</span> </li> </ol> </nav>  <a href="/" class="ml-1 truncate text-base font-semibold sm:hidden" aria-label="KN郑某某"> KN郑某某 </a> </div> <div class="chirpy-topbar__search"> <button type="button" class="search-pill" aria-label="打开搜索" title="打开搜索" data-search-open> <svg width="16" height="16" class="search-pill__icon" data-icon="lucide:search">   <symbol id="ai:lucide:search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m21 21l-4.34-4.34"/><circle cx="11" cy="11" r="8"/></g></symbol><use href="#ai:lucide:search"></use>  </svg> <span class="search-pill__label">搜索站点</span> <kbd class="search-pill__kbd" aria-hidden="true">/</kbd> </button> <dialog data-search-modal class="modal modal-top sm:modal-middle" aria-label="搜索" data-i18n="{&#34;placeholder&#34;:&#34;搜索站点&#34;,&#34;closeLabel&#34;:&#34;关闭搜索&#34;,&#34;clearLabel&#34;:&#34;清除&#34;,&#34;typeToStart&#34;:&#34;输入关键词搜索…&#34;,&#34;searching&#34;:&#34;搜索中…&#34;,&#34;noResultsFor&#34;:&#34;没有找到结果：&#34;,&#34;resultsCount&#34;:&#34;条结果&#34;,&#34;resultsCountOne&#34;:&#34;条结果&#34;,&#34;hintShortcut&#34;:&#34;按 / 随时打开搜索&#34;,&#34;hintNavigate&#34;:&#34;导航&#34;,&#34;hintSelect&#34;:&#34;打开&#34;}" data-pagefind-script="/_pagefind/pagefind.js"> <div class="modal-box bg-base-100 border-base-300 flex max-h-[80vh] w-full max-w-2xl flex-col overflow-hidden border p-0 shadow-2xl sm:rounded-xl">  <div class="border-base-300 flex items-center gap-3 border-b px-4 py-3 sm:px-5 sm:py-3.5"> <svg width="18" height="18" viewBox="0 0 24 24" class="text-base-content/70 shrink-0" aria-hidden="true" data-icon="lucide:search">   <use href="#ai:lucide:search"></use>  </svg> <input type="search" data-search-input class="text-base-content placeholder:text-base-content/45 min-w-0 flex-1 border-0 bg-transparent text-base font-medium outline-none focus:ring-0" placeholder="搜索站点" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="搜索"> <button type="button" data-search-clear class="text-base-content/70 hover:bg-base-200 hover:text-base-content hidden h-7 items-center rounded-md px-2 text-xs font-medium transition" aria-label="清除"> 清除 </button> <form method="dialog" class="shrink-0"> <button class="text-base-content/70 hover:bg-base-200 hover:text-base-content inline-flex h-7 w-7 items-center justify-center rounded-md transition" aria-label="关闭搜索" title="关闭搜索"> <svg width="16" height="16" data-icon="lucide:x">   <symbol id="ai:lucide:x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/></symbol><use href="#ai:lucide:x"></use>  </svg> </button> </form> </div>  <div data-search-results class="min-h-0 flex-1 overflow-y-auto"> <div class="px-5 py-12 text-center"> <div class="bg-base-200 text-base-content/45 mx-auto flex h-10 w-10 items-center justify-center rounded-full" aria-hidden="true"> <svg width="18" height="18" viewBox="0 0 24 24" data-icon="lucide:search">   <use href="#ai:lucide:search"></use>  </svg> </div> <p class="text-base-content/70 mt-3 text-sm">输入关键词搜索…</p> </div> </div>  <div class="border-base-300 bg-base-200/60 text-base-content/70 flex items-center justify-between gap-3 border-t px-4 py-2 text-[0.7rem] sm:px-5"> <div class="flex items-center gap-3"> <span class="inline-flex items-center gap-1.5"> <kbd class="kbd kbd-xs">↑</kbd><kbd class="kbd kbd-xs">↓</kbd> <span>导航</span> </span> <span class="hidden items-center gap-1.5 sm:inline-flex"> <kbd class="kbd kbd-xs">↵</kbd> <span>打开</span> </span> </div> <span class="inline-flex items-center gap-1.5"> <kbd class="kbd kbd-xs">Esc</kbd> <span class="hidden sm:inline">关闭搜索</span> </span> </div> </div> <form method="dialog" class="modal-backdrop"> <button>close</button> </form> </dialog> <script type="module" src="/_astro/SearchButton.astro_astro_type_script_index_0_lang.Dmndfq1C.js"></script>  </div> </header> <div class="flex flex-1 gap-10"> <div class="flex min-w-0 flex-1 flex-col"> <main id="main" aria-label="Main Content" class="min-w-0 flex-1 py-6 lg:pr-2"> <article class="px-1 py-6 sm:px-2 sm:py-8"> <header class="mb-8"> <h1 class="text-base-content text-3xl leading-tight font-extrabold tracking-tight sm:text-[2.25rem]"> AI 编程入门指南 </h1> <p class="text-base-content/65 mt-3 text-lg">讲解如何高效使用 AI 辅助编程，从 AGENTS.md 编写到工作流实践，涵盖核心概念、计划模式、规则与技能等关键环节。</p> <div class="text-base-content/70 mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm"> <span class="inline-flex items-center gap-1"> <svg width="14" height="14" data-icon="lucide:calendar-days">   <symbol id="ai:lucide:calendar-days" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 2v4m8-4v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></g></symbol><use href="#ai:lucide:calendar-days"></use>  </svg> <time datetime="2026-05-12T00:00:00.000Z">2026年5月12日</time> </span>  <span class="inline-flex items-center gap-1"> <svg width="14" height="14" data-icon="lucide:folder">   <symbol id="ai:lucide:folder" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol><use href="#ai:lucide:folder"></use>  </svg> <a href="/categories/ai/" class="hover:text-primary"> AI </a>  </span> <span class="inline-flex items-center gap-1"> <svg width="14" height="14" data-icon="lucide:clock">   <symbol id="ai:lucide:clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></g></symbol><use href="#ai:lucide:clock"></use>  </svg> 2 分钟阅读 </span>  </div> </header> <figure class="post-hero mb-8"> <div class="post-hero__frame"> <img src="/_astro/cover.CFOQhm8g_1Hwbyg.webp" srcset="/_astro/cover.CFOQhm8g_Z1HgDNV.webp 480w, /_astro/cover.CFOQhm8g_1ieP5g.webp 768w, /_astro/cover.CFOQhm8g_1Hwbyg.webp 800w" alt sizes="(max-width: 768px) 100vw, 1024px" loading="eager" decoding="async" data-astro-image="constrained" data-astro-image-fit="cover" data-astro-image-pos="center" style="object-position: center" width="800" height="400" class="post-hero__img"> </div>  </figure> <div class="prose-chirpy max-w-none">  <p>本文所有实践均基于 <a href="https://www.trae.ai" rel="nofollow noopener noreferrer" target="_blank">Trae</a> IDE，它是字节跳动推出的一款内置 AI 能力的编程工具，支持 AGENTS.md、项目规则、计划模式等 AI 编程机制。如果你使用其他 AI 编程工具（如 Cursor、Windsurf 等），核心思路相通，但具体操作会有所差异。</p>
+<h2 id="一核心概念"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#一核心概念">一、核心概念</a></h2>
+<p>AI 编程不是”让 AI 写完所有代码”，而是<strong>你负责决策，AI 负责执行</strong>。关键在于给 AI 提供足够的上下文，让它理解你的项目，然后在你的指导下完成编码。</p>
+<p>Trae 中有几个核心机制：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>机制</th><th>文件/位置</th><th>作用</th></tr></thead><tbody><tr><td><strong>AGENTS.md</strong></td><td>项目根目录</td><td>项目上下文文件，AI 每次对话都会读取</td></tr><tr><td><strong>项目规则</strong></td><td><code>.trae/rules/</code></td><td>持久化的项目规范，自动注入 AI 上下文</td></tr><tr><td><strong>计划模式</strong></td><td><code>/plan</code> 命令</td><td>先规划再执行，AI 产出方案文档供你审批</td></tr><tr><td><strong>规格说明</strong></td><td><code>/spec</code> 命令</td><td>生成完整的技术规格文档（PRD + 技术方案 + 实现清单）</td></tr><tr><td><strong>技能</strong></td><td><code>.trae/skills/</code></td><td>可复用的提示词模板，针对特定任务</td></tr></tbody></table>
+<hr>
+<h2 id="二第一步编写-agentsmd"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#二第一步编写-agentsmd">二、第一步：编写 AGENTS.md</a></h2>
+<h3 id="21-什么是-agentsmd"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#21-什么是-agentsmd">2.1 什么是 AGENTS.md</a></h3>
+<p>AGENTS.md 是 AI 的”项目说明书”。AI 每次对话开始时都会读取这个文件，了解项目的整体情况。<strong>写好 AGENTS.md 是 AI 编程最重要的一步。</strong></p>
+<h3 id="22-怎么写"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#22-怎么写">2.2 怎么写</a></h3>
+<p>AGENTS.md 有两种编写方式：</p>
+<ol>
+<li><strong>人工编写</strong>：如果你对项目非常熟悉，直接手写是最快的。你最清楚哪些信息对 AI 重要、哪些是项目特有的约定。</li>
+<li><strong>让 AI 生成</strong>：让 AI 先浏览项目代码和配置，然后生成初稿，你再审查修改。适合接手一个新项目时使用。</li>
+</ol>
+<p>两种方式都可以，关键是<strong>你必须审查和精简</strong>。AI 生成的初稿通常太长，需要按下面的原则精简。</p>
+<h3 id="23-应该包含什么"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#23-应该包含什么">2.3 应该包含什么</a></h3>
+<p>一份好的 AGENTS.md 只需要覆盖以下内容：</p>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.g4so9.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame"><figcaption class="header"></figcaption><pre data-language="markdown"><code><div class="ec-line"><div class="code"><span style="--0:#005CC5;--0fw:bold;--1:#6CB6FF;--1fw:bold"># 项目名称（一句话描述）</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#005CC5;--0fw:bold;--1:#6CB6FF;--1fw:bold">## 技术栈        ← 一行列出核心技术，不要用列表逐条展开</span></div></div><div class="ec-line"><div class="code"><span style="--0:#005CC5;--0fw:bold;--1:#6CB6FF;--1fw:bold">## 构建与运行    ← 关键命令</span></div></div><div class="ec-line"><div class="code"><span style="--0:#005CC5;--0fw:bold;--1:#6CB6FF;--1fw:bold">## 项目结构      ← 精简的目录树，只到包级别</span></div></div><div class="ec-line"><div class="code"><span style="--0:#005CC5;--0fw:bold;--1:#6CB6FF;--1fw:bold">## 架构要点      ← 最核心的设计模式（3~6 条）</span></div></div><div class="ec-line"><div class="code"><span style="--0:#005CC5;--0fw:bold;--1:#6CB6FF;--1fw:bold">## 编码规范      ← AI 必须遵守的代码风格（6 条以内）</span></div></div><div class="ec-line"><div class="code"><span style="--0:#005CC5;--0fw:bold;--1:#6CB6FF;--1fw:bold">## 核心业务      ← 关键实体和业务流程</span></div></div><div class="ec-line"><div class="code"><span style="--0:#005CC5;--0fw:bold;--1:#6CB6FF;--1fw:bold">## 运行环境      ← 语言版本、数据库等要求</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="# 项目名称（一句话描述）## 技术栈        ← 一行列出核心技术，不要用列表逐条展开## 构建与运行    ← 关键命令## 项目结构      ← 精简的目录树，只到包级别## 架构要点      ← 最核心的设计模式（3~6 条）## 编码规范      ← AI 必须遵守的代码风格（6 条以内）## 核心业务      ← 关键实体和业务流程## 运行环境      ← 语言版本、数据库等要求"><div></div></button></div></figure></div>
+<h3 id="24-注意事项重要"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#24-注意事项重要">2.4 注意事项（重要）</a></h3>
+<blockquote>
+<p><strong>AGENTS.md 的第一原则：精简。</strong></p>
+</blockquote>
+<ol>
+<li>
+<p><strong>控制在 100 行以内</strong>。AI 的上下文窗口是有限的，AGENTS.md 越长，AI 能用于实际编码的”记忆空间”就越少。内容太多反而会降低 AI 的理解能力。</p>
+</li>
+<li>
+<p><strong>写 AI 需要知道的，不是给新人看的文档</strong>。例如”JavaScript 使用 camelCase 命名”这种通用知识不需要写，但”路由必须用 <code>@Controller('beanName')</code> 显式命名”这种项目特有的约定必须写。</p>
+</li>
+<li>
+<p><strong>不要复制代码到 AGENTS.md</strong>。AI 可以直接读取源文件，不需要在 AGENTS.md 中嵌入代码片段。</p>
+</li>
+<li>
+<p><strong>不要写可以推断出来的信息</strong>。比如每个实体有哪些字段、每个接口有哪些方法——AI 读代码就能知道。</p>
+</li>
+<li>
+<p><strong>定期精简</strong>。随着项目发展，AGENTS.md 会逐渐膨胀。每隔一段时间审查一次，删除过时的内容。</p>
+</li>
+</ol>
+<hr>
+<h2 id="三用-plan-创建计划"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#三用-plan-创建计划">三、用 /plan 创建计划</a></h2>
+<h3 id="31-为什么要先做计划"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#31-为什么要先做计划">3.1 为什么要先做计划</a></h3>
+<p>直接让 AI 写代码，很容易出现：</p>
+<ul>
+<li>方案不合理，改完才发现要重做</li>
+<li>改动范围失控，涉及太多文件</li>
+<li>忽略了边界情况</li>
+</ul>
+<p><strong>先用 <code>/plan</code> 让 AI 输出方案，你审批通过后再执行。</strong></p>
+<h3 id="32-实战对话示例"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#32-实战对话示例">3.2 实战对话示例</a></h3>
+<p>假设你发现项目中某个模块存在性能问题，需要优化：</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">你：分析一下当前的查询性能瓶颈在哪里</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">AI：（分析完整的数据流，从视图层 → 控制层 → 服务层 → 数据访问层）</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292e;--1:#adbac7">    </span></span><span style="--0:#24292e;--1:#adbac7">结论：使用了内存分页，数据量大时存在性能隐患。</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">你：/plan 在尽量小改动的情况下，实现数据库层面的物理分页</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">AI：（产出详细方案文档，保存到 .trae/documents/）</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292e;--1:#adbac7">    </span></span><span style="--0:#24292e;--1:#adbac7">- 引入分页插件</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292e;--1:#adbac7">    </span></span><span style="--0:#24292e;--1:#adbac7">- 修改数据访问层相关文件</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292e;--1:#adbac7">    </span></span><span style="--0:#24292e;--1:#adbac7">- 预估改动量和风险</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="你：分析一下当前的查询性能瓶颈在哪里AI：（分析完整的数据流，从视图层 → 控制层 → 服务层 → 数据访问层）    结论：使用了内存分页，数据量大时存在性能隐患。你：/plan 在尽量小改动的情况下，实现数据库层面的物理分页AI：（产出详细方案文档，保存到 .trae/documents/）    - 引入分页插件    - 修改数据访问层相关文件    - 预估改动量和风险"><div></div></button></div></figure></div>
+<h3 id="33-计划的关键要素"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#33-计划的关键要素">3.3 计划的关键要素</a></h3>
+<p>一个好的计划应该包含：</p>
+<ol>
+<li><strong>背景与目标</strong>：为什么要做这件事</li>
+<li><strong>改动范围</strong>：精确到文件列表和改动说明</li>
+<li><strong>设计决策</strong>：为什么选择这个方案，而非其他方案</li>
+<li><strong>风险评估</strong>：可能出问题的地方</li>
+<li><strong>验证方式</strong>：如何确认改动是正确的</li>
+</ol>
+<h3 id="34-你可以对计划提出质疑"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#34-你可以对计划提出质疑">3.4 你可以对计划提出质疑</a></h3>
+<p>计划不是最终方案。你应该：</p>
+<ul>
+<li><strong>质疑合理性</strong>：为什么要改这么多文件？能不能更少？</li>
+<li><strong>提出约束</strong>：我希望控制层零改动，你看看行不行</li>
+<li><strong>要求解释</strong>：为什么选这个方案而不是其他？</li>
+</ul>
+<p>AI 会根据你的反馈修改方案，直到你满意为止。</p>
+<h3 id="35-plan-与-spec-的区别"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#35-plan-与-spec-的区别">3.5 /plan 与 /spec 的区别</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>命令</th><th>适用场景</th><th>产出物</th><th>复杂度</th></tr></thead><tbody><tr><td><code>/plan</code></td><td>单一功能改动、Bug 修复、性能优化</td><td>方案文档（保存到 <code>.trae/documents/</code>）</td><td>轻量</td></tr><tr><td><code>/spec</code></td><td>复杂功能、新模块开发、需要完整技术规格</td><td>PRD + 技术方案 + 实现清单 + 审查清单</td><td>重量</td></tr></tbody></table>
+<p><strong>简单说</strong>：小改动用 <code>/plan</code>，大功能用 <code>/spec</code>。<code>/spec</code> 会生成更完整的文档链，包括产品需求、技术方案、实现任务拆分和验收清单。</p>
+<hr>
+<h2 id="四执行与验证"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#四执行与验证">四、执行与验证</a></h2>
+<h3 id="41-执行流程"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#41-执行流程">4.1 执行流程</a></h3>
+<p>计划审批通过后，AI 会按照计划逐步实施：</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">AI 开始执行：</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">1. 添加必要依赖 ✓</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">2. 修改配置文件 ✓</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">3. 逐个修改受影响的模块 ✓</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">4. 清理无用代码 ✓</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="AI 开始执行：1. 添加必要依赖 ✓2. 修改配置文件 ✓3. 逐个修改受影响的模块 ✓4. 清理无用代码 ✓"><div></div></button></div></figure></div>
+<h3 id="42-验证是你的责任"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#42-验证是你的责任">4.2 验证是你的责任</a></h3>
+<p><strong>不要盲目信任 AI 的执行结果。</strong> 你需要：</p>
+<ol>
+<li><strong>检查遗漏</strong>：确认 AI 是否真的改完了所有需要改的文件</li>
+<li><strong>运行构建</strong>：确保项目编译/构建通过</li>
+<li><strong>运行测试</strong>：确保测试通过</li>
+<li><strong>检查诊断</strong>：查看 IDE 中的错误提示</li>
+</ol>
+<h3 id="43-实战中的纠错"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#43-实战中的纠错">4.3 实战中的纠错</a></h3>
+<p>AI 在执行过程中经常会出现遗漏或错误，这是正常现象：</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">你：你确定改完了？再检查看看</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">AI：（重新搜索所有文件，发现遗漏）</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292e;--1:#adbac7">    </span></span><span style="--0:#24292e;--1:#adbac7">→ 补全遗漏的修改</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292e;--1:#adbac7">    </span></span><span style="--0:#24292e;--1:#adbac7">→ 清理残留的无用代码</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="你：你确定改完了？再检查看看AI：（重新搜索所有文件，发现遗漏）    → 补全遗漏的修改    → 清理残留的无用代码"><div></div></button></div></figure></div>
+<p><strong>这说明 AI 可能犯错，你的审查不可替代。</strong></p>
+<hr>
+<h2 id="五规则与技能"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#五规则与技能">五、规则与技能</a></h2>
+<h3 id="51-创建项目规则rules"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#51-创建项目规则rules">5.1 创建项目规则（Rules）</a></h3>
+<p>项目规则存放在 <code>.trae/rules/</code> 目录下，会在每次对话时自动注入 AI 上下文。适合放<strong>强制性的、反复需要遵守的约定</strong>。</p>
+<p><strong>规则和 AGENTS.md 的区别</strong>：</p>
+<ul>
+<li>AGENTS.md：项目全貌（概述、结构、架构）</li>
+<li>Rules：具体的强制约束（“必须怎么做”）</li>
+</ul>
+<p><strong>什么时候创建规则</strong>：</p>
+<ul>
+<li>当你发现 AI 反复犯同样的错误时</li>
+<li>当你有绝对不能违反的约束时</li>
+<li>当某些规范需要在所有对话中都被遵守时</li>
+</ul>
+<h3 id="52-创建技能skills"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#52-创建技能skills">5.2 创建技能（Skills）</a></h3>
+<p>技能存放在 <code>.trae/skills/</code> 目录下，是可复用的提示词模板。适合放<strong>特定任务的完整流程</strong>。</p>
+<p><strong>什么时候创建技能</strong>：</p>
+<ul>
+<li>当一个任务有固定的执行步骤时</li>
+<li>当你想让 AI 按照特定模式完成某类工作时</li>
+</ul>
+<hr>
+<h2 id="六git-提交策略"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#六git-提交策略">六、Git 提交策略</a></h2>
+<p>使用 AI 编程后，项目中会出现一些 AI 辅助生成的文件。哪些该提交到 Git，哪些不该？</p>
+<h3 id="61-应该提交的文件"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#61-应该提交的文件">6.1 应该提交的文件</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>文件</th><th>说明</th></tr></thead><tbody><tr><td><code>AGENTS.md</code></td><td>项目上下文文件，团队成员和 AI 都需要它</td></tr><tr><td><code>.trae/rules/</code></td><td>项目规则，确保团队 AI 编程规范一致</td></tr><tr><td><code>.trae/skills/</code></td><td>可复用技能，团队共享</td></tr><tr><td>业务代码改动</td><td>AI 生成或修改的代码文件</td></tr></tbody></table>
+<h3 id="62-不应该提交的文件"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#62-不应该提交的文件">6.2 不应该提交的文件</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>文件</th><th>说明</th></tr></thead><tbody><tr><td><code>.trae/documents/</code></td><td><code>/plan</code> 生成的方案文档（一次性参考用）</td></tr><tr><td><code>.trae/</code> 下的临时会话文件</td><td>AI 对话的中间状态，无长期价值</td></tr></tbody></table>
+<h3 id="63-建议的-gitignore-补充"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#63-建议的-gitignore-补充">6.3 建议的 .gitignore 补充</a></h3>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="gitignore"><code><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7"># AI 编程临时文件</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">.trae/documents/</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="# AI 编程临时文件.trae/documents/"><div></div></button></div></figure></div>
+<blockquote>
+<p><strong>原则</strong>：提交对后续开发有参考价值的文件，丢弃一次性的中间产物。</p>
+</blockquote>
+<hr>
+<h2 id="七最佳实践总结"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#七最佳实践总结">七、最佳实践总结</a></h2>
+<h3 id="沟通技巧"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#沟通技巧">沟通技巧</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>做法</th><th>示例</th></tr></thead><tbody><tr><td>先问再做</td><td>”帮我分析一下查询性能” → 确认方案 → 再执行</td></tr><tr><td>明确约束</td><td>”在尽量小改动的情况下…” “控制层零改动”</td></tr><tr><td>质疑结果</td><td>”你确定改完了？再检查看看”</td></tr><tr><td>分步验证</td><td>”改完了吗？帮我检查一下是否还有遗漏”</td></tr></tbody></table>
+<h3 id="agentsmd-编写原则"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#agentsmd-编写原则">AGENTS.md 编写原则</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>原则</th><th>说明</th></tr></thead><tbody><tr><td>精简至上</td><td>控制在 100 行以内，AI 的上下文窗口很宝贵</td></tr><tr><td>写特异性</td><td>只写这个项目特有的约定，通用知识不用写</td></tr><tr><td>定期审查</td><td>每隔一段时间清理过时内容</td></tr></tbody></table>
+<h3 id="工作流节奏"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#工作流节奏">工作流节奏</a></h3>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">1. 提问分析  →  让 AI 先理解问题</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">2. /plan     →  AI 产出方案，你审批（简单改动）</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292e;--1:#adbac7">   </span></span><span style="--0:#24292e;--1:#adbac7">/spec     →  AI 产出完整规格，你审批（复杂功能）</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">3. 执行      →  AI 按计划实施</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">4. 验证      →  你检查结果，发现问题就指出</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">5. 记录      →  必要时更新 AGENTS.md / Rules</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="1. 提问分析  →  让 AI 先理解问题2. /plan     →  AI 产出方案，你审批（简单改动）   /spec     →  AI 产出完整规格，你审批（复杂功能）3. 执行      →  AI 按计划实施4. 验证      →  你检查结果，发现问题就指出5. 记录      →  必要时更新 AGENTS.md / Rules"><div></div></button></div></figure></div>
+<h3 id="常见错误"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#常见错误">常见错误</a></h3>
+<ol>
+<li><strong>直接让 AI 写代码</strong> → 应该先分析，再计划，再执行</li>
+<li><strong>AGENTS.md 写得太长</strong> → AI 理解力反而下降，精简才是王道</li>
+<li><strong>大功能只用 /plan</strong> → 复杂功能应该用 <code>/spec</code> 生成完整规格，避免遗漏</li>
+<li><strong>不验证就提交</strong> → AI 可能遗漏、写错，你必须检查</li>
+<li><strong>把 AI 当全能</strong> → AI 擅长模式匹配和代码生成，但架构决策需要你来做</li>
+</ol>
+<hr>
+<h2 id="八完整工作流示例"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#八完整工作流示例">八、完整工作流示例</a></h2>
+<p>以一次完整的迭代为例：</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7"># 阶段 1：初始化（只需一次）</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">你：生成项目的 AGENTS.md 文件</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">你：AGENTS.md 再精简！只保留 AI 需要知道的信息</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">→ 产出：精简的 AGENTS.md</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7"># 阶段 2：分析与计划</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">你：分析一下当前的性能瓶颈</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">你：/plan 在尽量小改动的情况下优化查询</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">→ 产出：优化方案文档</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7"># 阶段 3：执行与纠错</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">AI：修改相关文件...</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">你：你确定改完了？再检查看看</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">AI：补全遗漏的修改，清理残留代码</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">→ 产出：所有文件修改完成</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7"># 阶段 4：验证与提交</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">你：帮我构建一下，看看有没有问题</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">你：没问题的话帮我 commit</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">→ 产出：构建通过，git commit 完成</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="# 阶段 1：初始化（只需一次）你：生成项目的 AGENTS.md 文件你：AGENTS.md 再精简！只保留 AI 需要知道的信息→ 产出：精简的 AGENTS.md# 阶段 2：分析与计划你：分析一下当前的性能瓶颈你：/plan 在尽量小改动的情况下优化查询→ 产出：优化方案文档# 阶段 3：执行与纠错AI：修改相关文件...你：你确定改完了？再检查看看AI：补全遗漏的修改，清理残留代码→ 产出：所有文件修改完成# 阶段 4：验证与提交你：帮我构建一下，看看有没有问题你：没问题的话帮我 commit→ 产出：构建通过，git commit 完成"><div></div></button></div></figure></div>
+<p>这就是一个完整的 AI 编程迭代周期。记住：<strong>你是导演，AI 是演员</strong>。好的导演懂得先写剧本（AGENTS.md + Rules），再分镜（/plan），然后才开拍（执行），最后还要审片（验证）。</p>
+<h2 id="相关文章"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#相关文章">相关文章</a></h2>
+<ul>
+<li><a href="/posts/ai/llm-wiki/">LLM Wiki：用大语言模型构建个人知识库</a></li>
+<li><a href="/posts/ai/opencode-agentmemory/">在 OpenCode 中使用 agentmemory 实现 AI 代理持久记忆</a></li>
+</ul>  </div> <footer class="border-base-300 mt-10 flex flex-wrap items-center gap-2 border-t pt-6"> <span class="text-base-content/70 text-sm font-semibold tracking-wide uppercase"> 标签 </span> <a href="/tags/ai/" class="post-tag text-xs"> AI </a><a href="/tags/trae/" class="post-tag text-xs"> Trae </a><a href="/tags/agents-md/" class="post-tag text-xs"> AGENTS.md </a><a href="/tags/5f00-53d1-6548-7387/" class="post-tag text-xs"> 开发效率 </a> </footer> <nav aria-label="Post navigation" class="border-base-300 mt-10 grid gap-4 border-t pt-6 sm:grid-cols-2"> <a href="/posts/ai/llm-wiki/" rel="prev" class="card bg-base-200 hover:bg-base-300 transition-colors"> <div class="card-body"> <p class="text-base-content/70 text-xs tracking-wide uppercase"> <svg width="12" height="12" viewBox="0 0 24 24" class="inline -rotate-90 align-baseline" data-icon="lucide:arrow-up">   <use href="#ai:lucide:arrow-up"></use>  </svg> 上一篇 </p> <p class="font-semibold">LLM Wiki：用大语言模型构建个人知识库</p> </div> </a> <a href="/posts/ai/opencode-agentmemory/" rel="next" class="card bg-base-200 hover:bg-base-300 transition-colors sm:text-right"> <div class="card-body"> <p class="text-base-content/70 text-xs tracking-wide uppercase"> 下一篇 <svg width="12" height="12" viewBox="0 0 24 24" class="inline rotate-90 align-baseline" data-icon="lucide:arrow-up">   <use href="#ai:lucide:arrow-up"></use>  </svg> </p> <p class="font-semibold">在 OpenCode 中使用 agentmemory 实现 AI 代理持久记忆</p> </div> </a> </nav> <section class="border-base-300 mt-12 border-t pt-8" aria-labelledby="comments-heading"> <h2 id="comments-heading" class="mb-4 text-xl font-semibold">评论</h2> <div data-giscus-mount data-repo="imknn/blog" data-repo-id="R_kgDOSZJoZA" data-category="General" data-category-id="DIC_kwDOSZJoZM4C8sTk" data-mapping="title" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-loading="lazy" data-locale="zh-CN"></div>   </section> <script type="module">function d(){return document.documentElement.getAttribute("data-theme")==="chirpy-dark"?"dark":"light"}function s(){const t=document.querySelector("[data-giscus-mount]");if(!t||t.dataset.mounted==="true")return;t.dataset.mounted="true";const a=document.createElement("script");a.src="https://giscus.app/client.js",a.async=!0,a.crossOrigin="anonymous";const e=(o,n)=>{n!==void 0&&a.setAttribute(o,n)};e("data-repo",t.dataset.repo),e("data-repo-id",t.dataset.repoId),e("data-category",t.dataset.category),e("data-category-id",t.dataset.categoryId),e("data-mapping",t.dataset.mapping),e("data-strict",t.dataset.strict),e("data-reactions-enabled",t.dataset.reactionsEnabled),e("data-emit-metadata",t.dataset.emitMetadata),e("data-input-position",t.dataset.inputPosition),e("data-loading",t.dataset.loading),e("data-lang",t.dataset.locale),e("data-theme",d()),t.appendChild(a)}function i(){const t=document.querySelector("iframe.giscus-frame");t?.contentWindow&&t.contentWindow.postMessage({giscus:{setConfig:{theme:d()}}},"https://giscus.app")}s();document.addEventListener("theme-change",i);document.addEventListener("astro:page-load",s);</script> </article>  </main> <footer aria-label="Site Info" class="border-base-300 text-base-content/70 mt-10 flex flex-col gap-1 border-t py-6 text-sm lg:flex-row lg:items-center lg:justify-between"> <p> 
+© <time>2026</time> <a href="https://github.com/imknn" rel="noopener" class="hover:text-primary"> KN郑某某 </a>
+. 版权所有。  · <a href="/privacy" class="hover:text-primary"> 隐私政策 </a>  </p> <p> 由 <a href="https://astro.build" rel="noopener" class="hover:text-primary">
+Astro
+</a> 
+· 主题 <a href="https://github.com/kannansuresh/chirping-astro" rel="noopener" class="hover:text-primary"> Chirping Astro </a>  </p> </footer> </div> <aside class="chirpy-panel-rail" aria-label="Sidebar widgets"> <div class="chirpy-panel"> <section class="mb-8"> <h2 class="text-base-content/70 mb-3 text-xs font-bold tracking-[0.1em] uppercase"> 最近更新 </h2> <ul class="chirpy-aside-list"> <li> <a href="/posts/ai/claude-code-getting-started/" class="chirpy-aside-item truncate"> Claude Code 中的 AskUserQuestion：让 AI 主动问你问题 </a> </li><li> <a href="/posts/ai/opencode-codegraph-tutorial/" class="chirpy-aside-item truncate"> OpenCode + CodeGraph：让 AI 代理不再浪费 Token 猜代码 </a> </li><li> <a href="/posts/tools/pm2-guide/" class="chirpy-aside-item truncate"> PM2 入门教程：Node.js 进程管理利器 </a> </li><li> <a href="/posts/ai/opencode-agentmemory/" class="chirpy-aside-item truncate"> 在 OpenCode 中使用 agentmemory 实现 AI 代理持久记忆 </a> </li><li> <a href="/posts/ai/ai-coding-getting-started/" class="chirpy-aside-item truncate"> AI 编程入门指南 </a> </li> </ul> </section> <section class="mb-8"> <h2 class="text-base-content/70 mb-3 text-xs font-bold tracking-[0.1em] uppercase"> 分类 </h2> <ul class="chirpy-aside-list"> <li> <a href="/categories/docker/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">Docker</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">20</span> </a> </li><li> <a href="/categories/install/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">安装手册</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">15</span> </a> </li><li> <a href="/categories/linux/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">Linux</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">14</span> </a> </li><li> <a href="/categories/algorithm/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">算法基础</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">11</span> </a> </li><li> <a href="/categories/tools/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">工具</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">8</span> </a> </li><li> <a href="/categories/memo/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">备忘</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">6</span> </a> </li><li> <a href="/categories/ai/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">AI</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">5</span> </a> </li><li> <a href="/categories/website/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">建站</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">4</span> </a> </li><li> <a href="/categories/java/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">Java</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">3</span> </a> </li> </ul> </section> <section> <h2 class="text-base-content/70 mb-3 text-xs font-bold tracking-[0.1em] uppercase"> 热门标签 </h2> <div class="flex flex-wrap gap-2"> <a href="/tags/docker/" class="post-tag"> Docker </a><a href="/tags/linux/" class="post-tag"> Linux </a><a href="/tags/5b89-5168/" class="post-tag"> 安全 </a><a href="/tags/7b97-6cd5/" class="post-tag"> 算法 </a><a href="/tags/java/" class="post-tag"> Java </a><a href="/tags/547d-4ee4-884c/" class="post-tag"> 命令行 </a><a href="/tags/go/" class="post-tag"> Go </a><a href="/tags/mysql/" class="post-tag"> MySQL </a> </div> </section> </div> <nav aria-labelledby="toc-heading" class="toc sticky top-20 hidden max-h-[calc(100vh-6rem)] overflow-y-auto pr-2 text-sm xl:block"><h2 id="toc-heading" class="text-base-content/60 mb-3 text-xs font-semibold tracking-wide uppercase">目录</h2><ol class="toc-list space-y-1"><li class="toc-level-2" data-toc-parent="一核心概念"><a href="#一核心概念" data-toc-link="一核心概念" data-toc-depth="2">一、核心概念</a></li><li class="toc-level-2" data-toc-parent="二第一步编写-agentsmd"><a href="#二第一步编写-agentsmd" data-toc-link="二第一步编写-agentsmd" data-toc-depth="2">二、第一步：编写 AGENTS.md</a></li><li class="toc-level-3" data-toc-parent="二第一步编写-agentsmd"><a href="#21-什么是-agentsmd" data-toc-link="21-什么是-agentsmd" data-toc-depth="3">2.1 什么是 AGENTS.md</a></li><li class="toc-level-3" data-toc-parent="二第一步编写-agentsmd"><a href="#22-怎么写" data-toc-link="22-怎么写" data-toc-depth="3">2.2 怎么写</a></li><li class="toc-level-3" data-toc-parent="二第一步编写-agentsmd"><a href="#23-应该包含什么" data-toc-link="23-应该包含什么" data-toc-depth="3">2.3 应该包含什么</a></li><li class="toc-level-3" data-toc-parent="二第一步编写-agentsmd"><a href="#24-注意事项重要" data-toc-link="24-注意事项重要" data-toc-depth="3">2.4 注意事项（重要）</a></li><li class="toc-level-2" data-toc-parent="三用-plan-创建计划"><a href="#三用-plan-创建计划" data-toc-link="三用-plan-创建计划" data-toc-depth="2">三、用 /plan 创建计划</a></li><li class="toc-level-3" data-toc-parent="三用-plan-创建计划"><a href="#31-为什么要先做计划" data-toc-link="31-为什么要先做计划" data-toc-depth="3">3.1 为什么要先做计划</a></li><li class="toc-level-3" data-toc-parent="三用-plan-创建计划"><a href="#32-实战对话示例" data-toc-link="32-实战对话示例" data-toc-depth="3">3.2 实战对话示例</a></li><li class="toc-level-3" data-toc-parent="三用-plan-创建计划"><a href="#33-计划的关键要素" data-toc-link="33-计划的关键要素" data-toc-depth="3">3.3 计划的关键要素</a></li><li class="toc-level-3" data-toc-parent="三用-plan-创建计划"><a href="#34-你可以对计划提出质疑" data-toc-link="34-你可以对计划提出质疑" data-toc-depth="3">3.4 你可以对计划提出质疑</a></li><li class="toc-level-3" data-toc-parent="三用-plan-创建计划"><a href="#35-plan-与-spec-的区别" data-toc-link="35-plan-与-spec-的区别" data-toc-depth="3">3.5 /plan 与 /spec 的区别</a></li><li class="toc-level-2" data-toc-parent="四执行与验证"><a href="#四执行与验证" data-toc-link="四执行与验证" data-toc-depth="2">四、执行与验证</a></li><li class="toc-level-3" data-toc-parent="四执行与验证"><a href="#41-执行流程" data-toc-link="41-执行流程" data-toc-depth="3">4.1 执行流程</a></li><li class="toc-level-3" data-toc-parent="四执行与验证"><a href="#42-验证是你的责任" data-toc-link="42-验证是你的责任" data-toc-depth="3">4.2 验证是你的责任</a></li><li class="toc-level-3" data-toc-parent="四执行与验证"><a href="#43-实战中的纠错" data-toc-link="43-实战中的纠错" data-toc-depth="3">4.3 实战中的纠错</a></li><li class="toc-level-2" data-toc-parent="五规则与技能"><a href="#五规则与技能" data-toc-link="五规则与技能" data-toc-depth="2">五、规则与技能</a></li><li class="toc-level-3" data-toc-parent="五规则与技能"><a href="#51-创建项目规则rules" data-toc-link="51-创建项目规则rules" data-toc-depth="3">5.1 创建项目规则（Rules）</a></li><li class="toc-level-3" data-toc-parent="五规则与技能"><a href="#52-创建技能skills" data-toc-link="52-创建技能skills" data-toc-depth="3">5.2 创建技能（Skills）</a></li><li class="toc-level-2" data-toc-parent="六git-提交策略"><a href="#六git-提交策略" data-toc-link="六git-提交策略" data-toc-depth="2">六、Git 提交策略</a></li><li class="toc-level-3" data-toc-parent="六git-提交策略"><a href="#61-应该提交的文件" data-toc-link="61-应该提交的文件" data-toc-depth="3">6.1 应该提交的文件</a></li><li class="toc-level-3" data-toc-parent="六git-提交策略"><a href="#62-不应该提交的文件" data-toc-link="62-不应该提交的文件" data-toc-depth="3">6.2 不应该提交的文件</a></li><li class="toc-level-3" data-toc-parent="六git-提交策略"><a href="#63-建议的-gitignore-补充" data-toc-link="63-建议的-gitignore-补充" data-toc-depth="3">6.3 建议的 .gitignore 补充</a></li><li class="toc-level-2" data-toc-parent="七最佳实践总结"><a href="#七最佳实践总结" data-toc-link="七最佳实践总结" data-toc-depth="2">七、最佳实践总结</a></li><li class="toc-level-3" data-toc-parent="七最佳实践总结"><a href="#沟通技巧" data-toc-link="沟通技巧" data-toc-depth="3">沟通技巧</a></li><li class="toc-level-3" data-toc-parent="七最佳实践总结"><a href="#agentsmd-编写原则" data-toc-link="agentsmd-编写原则" data-toc-depth="3">AGENTS.md 编写原则</a></li><li class="toc-level-3" data-toc-parent="七最佳实践总结"><a href="#工作流节奏" data-toc-link="工作流节奏" data-toc-depth="3">工作流节奏</a></li><li class="toc-level-3" data-toc-parent="七最佳实践总结"><a href="#常见错误" data-toc-link="常见错误" data-toc-depth="3">常见错误</a></li><li class="toc-level-2" data-toc-parent="八完整工作流示例"><a href="#八完整工作流示例" data-toc-link="八完整工作流示例" data-toc-depth="2">八、完整工作流示例</a></li><li class="toc-level-2" data-toc-parent="相关文章"><a href="#相关文章" data-toc-link="相关文章" data-toc-depth="2">相关文章</a></li></ol></nav><script type="module">function f(){const c=document.querySelector(".toc");if(!c)return;const a=c.querySelectorAll("[data-toc-link]");if(!a.length)return;const s=c.querySelectorAll("li[data-toc-parent]"),i=new Map;a.forEach(t=>{const n=t.dataset.tocLink;n&&i.set(n,t)});const d=new Map;s.forEach(t=>{const e=t.querySelector("[data-toc-link]")?.dataset.tocLink,o=t.dataset.tocParent;e&&o&&d.set(e,o)});const r=Array.from(i.keys()).map(t=>document.getElementById(t)).filter(t=>t!==null);if(!r.length)return;function l(t){const n=d.get(t)??t;a.forEach(e=>e.dataset.tocLink===t?e.setAttribute("data-active","true"):e.removeAttribute("data-active")),s.forEach(e=>{const o=e.querySelector("[data-toc-link]"),g=parseInt(o?.dataset.tocDepth??"2",10),u=e.dataset.tocParent??"";g===2?e.dataset.sectionActive=u===n?"current":"true":e.dataset.sectionActive=u===n?"true":"false"})}r.length&&l(r[0].id);const p=new IntersectionObserver(t=>{const n=t.filter(e=>e.isIntersecting).sort((e,o)=>e.boundingClientRect.top-o.boundingClientRect.top);n.length&&l(n[0].target.id)},{rootMargin:"-80px 0px -70% 0px",threshold:0});r.forEach(t=>p.observe(t))}f();document.addEventListener("astro:page-load",f);</script> </aside> </div> </div> </div> <button type="button" class="back-to-top" aria-label="Back to top" data-back-to-top> <svg width="18" height="18" data-icon="lucide:arrow-up">   <symbol id="ai:lucide:arrow-up" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l7-7l7 7m-7 7V5"/></symbol><use href="#ai:lucide:arrow-up"></use>  </svg> </button> <script type="module">function s(){const o=document.querySelector("[data-back-to-top]");if(!o)return;const e=o;function t(){window.scrollY>320?e.classList.add("is-visible"):e.classList.remove("is-visible")}e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})}),window.addEventListener("scroll",t,{passive:!0}),t()}s();document.addEventListener("astro:page-load",s);</script> </body></html>  <script>(function(){const links = {"zh":"/posts/ai/ai-coding-getting-started/"};
+
+  window.__chirpyTranslations = links;
+})();</script>

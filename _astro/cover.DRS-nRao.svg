@@ -1,0 +1,58 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="50%" style="stop-color:#16213e"/>
+      <stop offset="100%" style="stop-color:#0f3460"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="400" fill="url(#bg)"/>
+  
+  <!-- Grid lines -->
+  <g opacity="0.1" stroke="#fff" stroke-width="0.5">
+    <line x1="0" y1="100" x2="800" y2="100"/>
+    <line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="300" x2="800" y2="300"/>
+    <line x1="200" y1="0" x2="200" y2="400"/>
+    <line x1="400" y1="0" x2="400" y2="400"/>
+    <line x1="600" y1="0" x2="600" y2="400"/>
+  </g>
+  
+  <!-- Astro logo -->
+  <g transform="translate(150, 200)">
+    <g stroke="#ff5d01" stroke-width="3">
+      <line x1="0" y1="-50" x2="0" y2="-65"/>
+      <line x1="35" y1="-35" x2="45" y2="-45"/>
+      <line x1="50" y1="0" x2="65" y2="0"/>
+      <line x1="35" y1="35" x2="45" y2="45"/>
+      <line x1="0" y1="50" x2="0" y2="65"/>
+      <line x1="-35" y1="35" x2="-45" y2="45"/>
+      <line x1="-50" y1="0" x2="-65" y2="0"/>
+      <line x1="-35" y1="-35" x2="-45" y2="-45"/>
+    </g>
+    <circle cx="0" cy="0" r="30" fill="#ff5d01"/>
+    <circle cx="0" cy="0" r="18" fill="#1a1a2e"/>
+  </g>
+  
+  <!-- Arrow -->
+  <g transform="translate(350, 200)">
+    <path d="M 0,-25 L 80,0 L 0,25 L 15,0 Z" fill="#e94560"/>
+    <rect x="-15" y="-6" width="30" height="12" fill="#e94560"/>
+  </g>
+  
+  <!-- GitHub Pages icon -->
+  <g transform="translate(600, 200)">
+    <polygon points="0,-55 48,-28 48,28 0,55 -48,28 -48,-28" fill="#24292e" stroke="#fff" stroke-width="2"/>
+    <text x="0" y="8" text-anchor="middle" fill="#fff" font-family="Arial" font-size="16" font-weight="bold">GH</text>
+    <text x="0" y="30" text-anchor="middle" fill="#fff" font-family="Arial" font-size="14">Pages</text>
+  </g>
+  
+  <!-- Title -->
+  <text x="400" y="80" text-anchor="middle" fill="#fff" font-family="Arial" font-size="28" font-weight="bold">Astro + GitHub Actions</text>
+  <text x="400" y="115" text-anchor="middle" fill="#e94560" font-family="Arial" font-size="20">Auto Deploy to GitHub Pages</text>
+  
+  <!-- URL -->
+  <text x="400" y="360" text-anchor="middle" fill="#fff" font-family="Arial" font-size="14" opacity="0.8">izqy.top</text>
+</svg>

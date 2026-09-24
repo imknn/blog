@@ -1,0 +1,71 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#080b1f"/>
+      <stop offset="50%" style="stop-color:#111827"/>
+      <stop offset="100%" style="stop-color:#24124d"/>
+    </linearGradient>
+    <linearGradient id="accent1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e94560"/>
+      <stop offset="100%" style="stop-color:#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="brain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e94560;stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.8"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softglow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <circle cx="100" cy="80" r="90" fill="#e94560" opacity="0.08"/>
+  <circle cx="700" cy="320" r="110" fill="#3b82f6" opacity="0.1"/>
+  <circle cx="400" cy="200" r="60" fill="#8b5cf6" opacity="0.06"/>
+
+  <g transform="translate(400, 185)" filter="url(#glow)">
+    <circle r="45" fill="none" stroke="url(#accent1)" stroke-width="2" opacity="0.6"/>
+    <circle r="35" fill="none" stroke="#e94560" stroke-width="1.5" opacity="0.4"/>
+    <ellipse rx="18" ry="22" fill="none" stroke="url(#brain)" stroke-width="2"/>
+    <path d="M-8,-12 Q-14,-5 -8,0 Q-14,5 -8,12" fill="none" stroke="#e94560" stroke-width="1.5" opacity="0.7"/>
+    <path d="M8,-12 Q14,-5 8,0 Q14,5 8,12" fill="none" stroke="#8b5cf6" stroke-width="1.5" opacity="0.7"/>
+    <line x1="-3" y1="-18" x2="3" y2="-18" stroke="#e94560" stroke-width="1" opacity="0.5"/>
+    <circle cx="-22" cy="0" r="3" fill="#3b82f6" opacity="0.6" filter="url(#softglow)"/>
+    <circle cx="22" cy="0" r="3" fill="#e94560" opacity="0.6" filter="url(#softglow)"/>
+    <circle cx="0" cy="-22" r="2.5" fill="#8b5cf6" opacity="0.5" filter="url(#softglow)"/>
+    <circle cx="0" cy="22" r="2.5" fill="#3b82f6" opacity="0.5" filter="url(#softglow)"/>
+    <line x1="-22" y1="0" x2="-35" y2="-15" stroke="#3b82f6" stroke-width="1" opacity="0.4"/>
+    <line x1="22" y1="0" x2="35" y2="-15" stroke="#e94560" stroke-width="1" opacity="0.4"/>
+    <line x1="0" y1="-22" x2="-15" y2="-38" stroke="#8b5cf6" stroke-width="1" opacity="0.3"/>
+    <line x1="0" y1="22" x2="15" y2="38" stroke="#3b82f6" stroke-width="1" opacity="0.3"/>
+    <circle cx="-38" cy="-18" r="2" fill="#3b82f6" opacity="0.5" filter="url(#softglow)"/>
+    <circle cx="38" cy="-18" r="2" fill="#e94560" opacity="0.5" filter="url(#softglow)"/>
+    <circle cx="-18" cy="-40" r="1.8" fill="#8b5cf6" opacity="0.4" filter="url(#softglow)"/>
+    <circle cx="18" cy="40" r="1.8" fill="#3b82f6" opacity="0.4" filter="url(#softglow)"/>
+  </g>
+
+  <rect x="100" y="270" width="600" height="40" rx="8" fill="#0f0f1a" opacity="0.5" stroke="#e94560" stroke-width="0.5" stroke-opacity="0.3"/>
+  <g transform="translate(130, 290)">
+    <rect x="0" y="-5" width="40" height="10" rx="2" fill="#3b82f6" opacity="0.6"/>
+    <text x="45" y="4" fill="#94a3b8" font-family="Arial" font-size="11">memory_save</text>
+    <rect x="150" y="-5" width="40" height="10" rx="2" fill="#e94560" opacity="0.6"/>
+    <text x="195" y="4" fill="#94a3b8" font-family="Arial" font-size="11">memory_recall</text>
+    <rect x="320" y="-5" width="40" height="10" rx="2" fill="#8b5cf6" opacity="0.6"/>
+    <text x="365" y="4" fill="#94a3b8" font-family="Arial" font-size="11">memory_search</text>
+  </g>
+
+  <text x="400" y="55" text-anchor="middle" fill="#fff" font-family="Arial" font-size="26" font-weight="bold">OpenCode + agentmemory</text>
+  <text x="400" y="82" text-anchor="middle" fill="#e94560" font-family="Arial" font-size="16" opacity="0.9">Persistent Memory for AI Agents</text>
+
+  <text x="400" y="375" text-anchor="middle" fill="#fff" font-family="Arial" font-size="14" opacity="0.8">izqy.top</text>
+</svg>

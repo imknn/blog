@@ -1,0 +1,66 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1628"/>
+      <stop offset="50%" style="stop-color:#0d2818"/>
+      <stop offset="100%" style="stop-color:#0a1628"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <rect width="800" height="400" fill="url(#bg)"/>
+  
+  <!-- 背景网格 -->
+  <g stroke="#10b981" stroke-width="0.5" opacity="0.1">
+    <line x1="0" y1="50" x2="800" y2="50"/>
+    <line x1="0" y1="100" x2="800" y2="100"/>
+    <line x1="0" y1="150" x2="800" y2="150"/>
+    <line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="250" x2="800" y2="250"/>
+    <line x1="0" y1="300" x2="800" y2="300"/>
+    <line x1="0" y1="350" x2="800" y2="350"/>
+    <line x1="100" y1="0" x2="100" y2="400"/>
+    <line x1="200" y1="0" x2="200" y2="400"/>
+    <line x1="300" y1="0" x2="300" y2="400"/>
+    <line x1="400" y1="0" x2="400" y2="400"/>
+    <line x1="500" y1="0" x2="500" y2="400"/>
+    <line x1="600" y1="0" x2="600" y2="400"/>
+    <line x1="700" y1="0" x2="700" y2="400"/>
+  </g>
+  
+  <!-- 进程管理图形 -->
+  <g filter="url(#glow)">
+    <!-- 主进程圆圈 -->
+    <circle cx="280" cy="200" r="45" fill="none" stroke="#10b981" stroke-width="2" opacity="0.8"/>
+    <circle cx="280" cy="200" r="35" fill="#10b981" opacity="0.2"/>
+    <text x="280" y="205" text-anchor="middle" fill="#10b981" font-family="Arial" font-size="14" font-weight="bold">MAIN</text>
+    
+    <!-- Worker进程 -->
+    <circle cx="400" cy="140" r="30" fill="none" stroke="#06b6d4" stroke-width="2" opacity="0.8"/>
+    <text x="400" y="145" text-anchor="middle" fill="#06b6d4" font-family="Arial" font-size="11">W1</text>
+    
+    <circle cx="480" cy="200" r="30" fill="none" stroke="#06b6d4" stroke-width="2" opacity="0.8"/>
+    <text x="480" y="205" text-anchor="middle" fill="#06b6d4" font-family="Arial" font-size="11">W2</text>
+    
+    <circle cx="400" cy="260" r="30" fill="none" stroke="#06b6d4" stroke-width="2" opacity="0.8"/>
+    <text x="400" y="265" text-anchor="middle" fill="#06b6d4" font-family="Arial" font-size="11">W3</text>
+    
+    <!-- 连接线 -->
+    <line x1="315" y1="180" x2="375" y2="155" stroke="#10b981" stroke-width="1.5" opacity="0.6"/>
+    <line x1="325" y1="200" x2="450" y2="200" stroke="#10b981" stroke-width="1.5" opacity="0.6"/>
+    <line x1="315" y1="220" x2="375" y2="245" stroke="#10b981" stroke-width="1.5" opacity="0.6"/>
+  </g>
+  
+  <!-- 标题 -->
+  <text x="400" y="65" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="32" font-weight="bold">PM2 Process Manager</text>
+  <text x="400" y="95" text-anchor="middle" fill="#10b981" font-family="Arial, sans-serif" font-size="16">Node.js Production Ready</text>
+  
+  <!-- 底部信息 -->
+  <text x="400" y="375" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="14" opacity="0.8">izqy.top</text>
+</svg>

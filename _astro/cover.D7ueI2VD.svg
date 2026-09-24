@@ -1,0 +1,95 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="50%" style="stop-color:#16213e"/>
+      <stop offset="100%" style="stop-color:#0f3460"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="400" fill="url(#bg)"/>
+
+  <!-- Grid lines -->
+  <g opacity="0.1" stroke="#fff" stroke-width="0.5">
+    <line x1="0" y1="100" x2="800" y2="100"/>
+    <line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="300" x2="800" y2="300"/>
+    <line x1="200" y1="0" x2="200" y2="400"/>
+    <line x1="400" y1="0" x2="400" y2="400"/>
+    <line x1="600" y1="0" x2="600" y2="400"/>
+  </g>
+
+  <!-- Remote branch (top) -->
+  <g transform="translate(120, 170)">
+    <circle cx="0" cy="0" r="10" fill="#6cc644"/>
+    <rect x="15" y="-6" width="80" height="12" rx="6" fill="#6cc644" opacity="0.8"/>
+    <text x="55" y="4" text-anchor="middle" fill="#fff" font-family="Arial" font-size="10" font-weight="bold">origin/main</text>
+  </g>
+
+  <!-- Remote commits -->
+  <g transform="translate(240, 170)">
+    <circle cx="0" cy="0" r="6" fill="#6cc644"/>
+    <line x1="6" y1="0" x2="40" y2="0" stroke="#6cc644" stroke-width="2"/>
+    <circle cx="50" cy="0" r="6" fill="#6cc644"/>
+    <line x1="56" y1="0" x2="90" y2="0" stroke="#6cc644" stroke-width="2"/>
+    <circle cx="100" cy="0" r="6" fill="#6cc644"/>
+    <line x1="106" y1="0" x2="140" y2="0" stroke="#6cc644" stroke-width="2"/>
+    <circle cx="150" cy="0" r="6" fill="#6cc644"/>
+    <text x="75" y="-15" text-anchor="middle" fill="#6cc644" font-family="Arial" font-size="11">10 commits ahead</text>
+  </g>
+
+  <!-- Local branch (bottom) -->
+  <g transform="translate(120, 230)">
+    <circle cx="0" cy="0" r="10" fill="#f14e32"/>
+    <rect x="15" y="-6" width="60" height="12" rx="6" fill="#f14e32" opacity="0.8"/>
+    <text x="45" y="4" text-anchor="middle" fill="#fff" font-family="Arial" font-size="10" font-weight="bold">local</text>
+  </g>
+
+  <!-- Local modified files indicator -->
+  <g transform="translate(240, 230)">
+    <circle cx="0" cy="0" r="6" fill="#f14e32"/>
+    <line x1="6" y1="0" x2="40" y2="0" stroke="#f14e32" stroke-width="2" stroke-dasharray="4,3"/>
+    <rect x="50" y="-14" width="90" height="28" rx="4" fill="none" stroke="#f14e32" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="95" y="-2" text-anchor="middle" fill="#f14e32" font-family="Arial" font-size="9">modified: 7</text>
+    <text x="95" y="10" text-anchor="middle" fill="#f14e32" font-family="Arial" font-size="9">untracked: 3</text>
+  </g>
+
+  <!-- Merge arrow -->
+  <g transform="translate(470, 200)">
+    <path d="M 0,0 C 30,-30 50,-30 70,0" fill="none" stroke="#e94560" stroke-width="2.5" stroke-dasharray="6,3"/>
+    <polygon points="70,0 62,-6 62,6" fill="#e94560"/>
+    <text x="35" y="-35" text-anchor="middle" fill="#e94560" font-family="Arial" font-size="10">git pull</text>
+  </g>
+
+  <!-- Git logo simplified -->
+  <g transform="translate(630, 200)">
+    <polygon points="0,-45 39,-23 39,23 0,45 -39,23 -39,-23" fill="#f05032" stroke="#fff" stroke-width="1.5"/>
+    <g fill="none" stroke="#fff" stroke-width="3">
+      <path d="M -12,-15 L 0,-5 L 12,-15"/>
+      <path d="M -12,5 L 0,15 L 12,5"/>
+      <line x1="0" y1="-5" x2="0" y2="15"/>
+    </g>
+  </g>
+
+  <!-- Solution badges -->
+  <g transform="translate(560, 320)">
+    <rect x="0" y="0" width="65" height="24" rx="12" fill="#6cc644" opacity="0.9"/>
+    <text x="32" y="16" text-anchor="middle" fill="#fff" font-family="Arial" font-size="10" font-weight="bold">stash</text>
+  </g>
+  <g transform="translate(635, 320)">
+    <rect x="0" y="0" width="65" height="24" rx="12" fill="#e94560" opacity="0.9"/>
+    <text x="32" y="16" text-anchor="middle" fill="#fff" font-family="Arial" font-size="10" font-weight="bold">restore</text>
+  </g>
+  <g transform="translate(710, 320)">
+    <rect x="0" y="0" width="65" height="24" rx="12" fill="#3b82f6" opacity="0.9"/>
+    <text x="32" y="16" text-anchor="middle" fill="#fff" font-family="Arial" font-size="10" font-weight="bold">commit</text>
+  </g>
+
+  <!-- Title -->
+  <text x="400" y="65" text-anchor="middle" fill="#fff" font-family="Arial" font-size="26" font-weight="bold">Git Pull</text>
+  <text x="400" y="100" text-anchor="middle" fill="#e94560" font-family="Arial" font-size="18">Three Strategies for Local Changes</text>
+
+  <!-- URL -->
+  <text x="400" y="375" text-anchor="middle" fill="#fff" font-family="Arial" font-size="14" opacity="0.8">izqy.top</text>
+</svg>

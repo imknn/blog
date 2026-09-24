@@ -1,0 +1,412 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="chirpy-light"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Astro v6.2.2"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f6f7f8"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e"><link rel="icon" type="image/x-icon"><link rel="alternate" type="application/rss+xml" title="KN郑某某 — RSS" href="/rss.xml"><title>在 OpenCode 中使用 agentmemory 实现 AI 代理持久记忆 — KN郑某某</title><meta name="description" content="手把手教你为 OpenCode 配置 agentmemory，让 AI 代理拥有跨会话的持久化记忆能力，涵盖完整服务器和 Standalone 两种模式。"><link rel="canonical" href="https://izqy.top/posts/ai/opencode-agentmemory/"><link rel="alternate" type="application/rss+xml" title="KN郑某某 — RSS" href="/rss.xml"><link rel="sitemap" type="application/xml" href="/sitemap-index.xml"><meta property="og:site_name" content="KN郑某某"><meta property="og:title" content="在 OpenCode 中使用 agentmemory 实现 AI 代理持久记忆 — KN郑某某"><meta property="og:description" content="手把手教你为 OpenCode 配置 agentmemory，让 AI 代理拥有跨会话的持久化记忆能力，涵盖完整服务器和 Standalone 两种模式。"><meta property="og:type" content="article"><meta property="og:url" content="https://izqy.top/posts/ai/opencode-agentmemory/"><meta property="og:image" content="https://izqy.top/og/ai/opencode-agentmemory.png"><meta property="og:locale" content="zh_CN"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="在 OpenCode 中使用 agentmemory 实现 AI 代理持久记忆 — KN郑某某"><meta name="twitter:description" content="手把手教你为 OpenCode 配置 agentmemory，让 AI 代理拥有跨会话的持久化记忆能力，涵盖完整服务器和 Standalone 两种模式。"><meta name="twitter:image" content="https://izqy.top/og/ai/opencode-agentmemory.png"><meta property="article:published_time" content="2026-05-27T00:00:00.000Z"><meta property="article:tag" content="AI"><meta property="article:tag" content="OpenCode"><meta property="article:tag" content="MCP"><meta property="article:tag" content="开发效率"><style>@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6";src:url("/_astro/fonts/97b31e56694e24bd.woff2") format("woff2");font-display:swap;font-weight:400;font-style:normal;}@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6";src:url("/_astro/fonts/e663efc310bb5c38.woff2") format("woff2");font-display:swap;font-weight:600;font-style:normal;}@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6";src:url("/_astro/fonts/2b0363f6005b81b6.woff2") format("woff2");font-display:swap;font-weight:700;font-style:normal;}@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6";src:url("/_astro/fonts/de49d90087fe68ed.woff2") format("woff2");font-display:swap;font-weight:900;font-style:normal;}@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6 fallback: Arial";src:local("Arial");font-display:swap;font-weight:400;font-style:normal;size-adjust:93.7639%;ascent-override:109.2105%;descent-override:42.6604%;line-gap-override:0%;}@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6 fallback: Arial";src:local("Arial");font-display:swap;font-weight:600;font-style:normal;size-adjust:93.7639%;ascent-override:109.2105%;descent-override:42.6604%;line-gap-override:0%;}@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6 fallback: Arial";src:local("Arial");font-display:swap;font-weight:700;font-style:normal;size-adjust:93.7639%;ascent-override:109.2105%;descent-override:42.6604%;line-gap-override:0%;}@font-face{font-family:"Source Sans 3-00d13350b9cfb9c6 fallback: Arial";src:local("Arial");font-display:swap;font-weight:900;font-style:normal;size-adjust:93.7639%;ascent-override:109.2105%;descent-override:42.6604%;line-gap-override:0%;}:root{--font-source-sans-3:"Source Sans 3-00d13350b9cfb9c6","Source Sans 3-00d13350b9cfb9c6 fallback: Arial",sans-serif;}</style><style>@font-face{font-family:Lato-f725e5f983dcbf80;src:url("/_astro/fonts/cb5d3ffa9141e536.woff2") format("woff2");font-display:swap;font-weight:300;font-style:normal;}@font-face{font-family:Lato-f725e5f983dcbf80;src:url("/_astro/fonts/84684321131d27b4.woff2") format("woff2");font-display:swap;font-weight:400;font-style:normal;}@font-face{font-family:"Lato-f725e5f983dcbf80 fallback: Arial";src:local("Arial");font-display:swap;font-weight:300;font-style:normal;size-adjust:94.9976%;ascent-override:103.8974%;descent-override:22.4216%;line-gap-override:0%;}@font-face{font-family:"Lato-f725e5f983dcbf80 fallback: Arial";src:local("Arial");font-display:swap;font-weight:400;font-style:normal;size-adjust:94.9976%;ascent-override:103.8974%;descent-override:22.4216%;line-gap-override:0%;}:root{--font-lato:Lato-f725e5f983dcbf80,"Lato-f725e5f983dcbf80 fallback: Arial",sans-serif;}</style><style>@font-face{font-family:"JetBrains Mono-1e7486e83f660c57";src:url("/_astro/fonts/7b334a93f5470935.woff2") format("woff2");font-display:swap;font-weight:400;font-style:normal;}@font-face{font-family:"JetBrains Mono-1e7486e83f660c57";src:url("/_astro/fonts/23f2cf21df1909b5.woff2") format("woff2");font-display:swap;font-weight:600;font-style:normal;}@font-face{font-family:"JetBrains Mono-1e7486e83f660c57 fallback: Arial";src:local("Arial");font-display:swap;font-weight:400;font-style:normal;size-adjust:134.5893%;ascent-override:75.7861%;descent-override:22.29%;line-gap-override:0%;}@font-face{font-family:"JetBrains Mono-1e7486e83f660c57 fallback: Arial";src:local("Arial");font-display:swap;font-weight:600;font-style:normal;size-adjust:134.5893%;ascent-override:75.7861%;descent-override:22.29%;line-gap-override:0%;}:root{--font-jetbrains-mono:"JetBrains Mono-1e7486e83f660c57","JetBrains Mono-1e7486e83f660c57 fallback: Arial",sans-serif;}</style><link rel="preload" href="/_astro/fonts/7b334a93f5470935.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/_astro/fonts/23f2cf21df1909b5.woff2" as="font" type="font/woff2" crossorigin><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+      (function () {
+        function applyTheme() {
+          try {
+            var stored = localStorage.getItem('theme');
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            var valid = stored === 'chirpy-dark' || stored === 'chirpy-light';
+            var theme = valid ? stored : prefersDark ? 'chirpy-dark' : 'chirpy-light';
+            if (!valid && stored) localStorage.setItem('theme', theme);
+            document.documentElement.setAttribute('data-theme', theme);
+          } catch {
+            /* ignore */
+          }
+        }
+        applyTheme();
+        // Re-apply after view transitions swap in a fresh <html data-theme>.
+        document.addEventListener('astro:after-swap', applyTheme);
+      })();
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.-ozoYhNg.css">
+<link rel="stylesheet" href="/_astro/MathStyles.HM2DiD67.css"></head> <body> <a href="#main" class="focus:bg-primary focus:text-primary-content sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:px-3 focus:py-2"> 跳转到内容 </a> <aside id="sidebar" class="chirpy-sidebar" aria-label="Sidebar">  <header class="flex w-full flex-col items-center pt-4 pb-6 text-center"> <a href="/" class="flex flex-col items-center" aria-label="KN郑某某"> <span class="border-base-100 block h-28 w-28 overflow-hidden rounded-full border-4 shadow-sm transition hover:scale-[1.02]" style="background:linear-gradient(135deg, var(--color-primary), color-mix(in oklab, var(--color-primary) 70%, white));"> <img src="/_astro/avatar.Ck_wogE8_Nstg3.webp" srcset="/_astro/avatar.Ck_wogE8_Nstg3.webp 112w, /_astro/avatar.Ck_wogE8_HAsU2.webp 224w" alt="KN郑某某" loading="eager" decoding="async" sizes="(min-width: 112px) 112px, 100vw" data-astro-image="constrained" data-astro-image-fit="cover" data-astro-image-pos="center" style="object-position: center" width="112" height="112" class="h-full w-full object-cover"> </span> <span class="text-base-content hover:text-primary mt-4 text-xl font-semibold tracking-wide"> KN郑某某 </span> </a> <p class="text-base-content/70 mt-1 max-w-56 text-sm italic">程序员的那些年</p> </header>  <nav class="chirpy-nav flex-1" aria-label="Main"> <ul class="contents flex-col gap-0.5"> <li> <a href="/" class="chirpy-nav-link"> <svg width="16" height="16" data-icon="lucide:home">   <symbol id="ai:lucide:home" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></g></symbol><use href="#ai:lucide:home"></use>  </svg> <span>首页</span> </a> </li><li> <a href="/categories" class="chirpy-nav-link"> <svg width="16" height="16" data-icon="lucide:layers">   <symbol id="ai:lucide:layers" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></g></symbol><use href="#ai:lucide:layers"></use>  </svg> <span>分类</span> </a> </li><li> <a href="/tags" class="chirpy-nav-link"> <svg width="16" height="16" data-icon="lucide:tag">   <symbol id="ai:lucide:tag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></g></symbol><use href="#ai:lucide:tag"></use>  </svg> <span>标签</span> </a> </li><li> <a href="/archives" class="chirpy-nav-link"> <svg width="16" height="16" data-icon="lucide:archive">   <symbol id="ai:lucide:archive" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8m-10 4h4"/></g></symbol><use href="#ai:lucide:archive"></use>  </svg> <span>归档</span> </a> </li><li> <a href="/about" class="chirpy-nav-link"> <svg width="16" height="16" data-icon="lucide:info">   <symbol id="ai:lucide:info" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></g></symbol><use href="#ai:lucide:info"></use>  </svg> <span>关于</span> </a> </li> </ul> </nav>  <div class="border-base-300 mt-4 flex w-full flex-wrap items-center justify-center gap-2 border-t pt-4"> <button type="button" class="chirpy-social" data-theme-toggle aria-label="切换主题" title="切换主题"> <span data-theme-icon="light" class="hidden"> <svg width="18" height="18" aria-label="浅色" role="img" data-icon="lucide:sun">   <symbol id="ai:lucide:sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></g></symbol><use href="#ai:lucide:sun"></use>  </svg> </span> <span data-theme-icon="dark" class="hidden"> <svg width="18" height="18" aria-label="深色" role="img" data-icon="lucide:moon">   <symbol id="ai:lucide:moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></symbol><use href="#ai:lucide:moon"></use>  </svg> </span> </button> <script type="module">const d="theme";function i(){return document.documentElement.getAttribute("data-theme")??"chirpy-light"}function r(e,t=!0){if(document.documentElement.setAttribute("data-theme",e),t)try{localStorage.setItem(d,e)}catch{}s(e),document.dispatchEvent(new CustomEvent("theme-change",{detail:{theme:e}}))}function l(e,t){const c=typeof document.startViewTransition=="function",o=window.matchMedia("(prefers-reduced-motion: reduce)").matches;if(!c||o||!t){r(e);return}const n=document.documentElement;n.style.setProperty("--theme-x",`${t.x}px`),n.style.setProperty("--theme-y",`${t.y}px`);const a=Math.max(t.x,window.innerWidth-t.x),h=Math.max(t.y,window.innerHeight-t.y),m=Math.hypot(a,h);n.style.setProperty("--theme-radius",`${m}px`),n.dataset.themeAnim=e==="chirpy-dark"?"to-dark":"to-light",document.startViewTransition(()=>{r(e)}).finished.finally(()=>{delete n.dataset.themeAnim})}function s(e){document.querySelectorAll("[data-theme-icon]").forEach(t=>{const c=e==="chirpy-dark"?"light":"dark";t.classList.toggle("hidden",t.dataset.themeIcon!==c)})}function u(){s(i()),document.querySelectorAll("[data-theme-toggle]").forEach(t=>{t.addEventListener("click",c=>{const o=i()==="chirpy-dark"?"chirpy-light":"chirpy-dark",n=t.getBoundingClientRect(),a={x:c.clientX||n.left+n.width/2,y:c.clientY||n.top+n.height/2};l(o,a)})}),window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",t=>{try{if(localStorage.getItem(d))return}catch{}r(t.matches?"chirpy-dark":"chirpy-light",!1)})}document.addEventListener("astro:page-load",u);</script> <a href="https://github.com/imknn" rel="noopener" class="chirpy-social" aria-label="GitHub" target="_blank"> <svg width="16" height="16" data-icon="simple-icons:github">   <symbol id="ai:simple-icons:github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol><use href="#ai:simple-icons:github"></use>  </svg> </a><a href="/rss.xml" rel="noopener" class="chirpy-social" aria-label="RSS" target="_blank"> <svg width="16" height="16" data-icon="lucide:rss">   <symbol id="ai:lucide:rss" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></g></symbol><use href="#ai:lucide:rss"></use>  </svg> </a> </div> </aside>  <button type="button" data-sidebar-mask class="fixed inset-0 z-30 hidden bg-black/40 lg:hidden" aria-label="Close sidebar" tabindex="-1"></button> <script type="module">function o(){const e=document.getElementById("sidebar"),d=document.querySelector("[data-sidebar-mask]");if(!e||!d)return;function n(){e?.classList.add("is-open"),d?.classList.remove("hidden"),document.body.style.overflow="hidden"}function s(){e?.classList.remove("is-open"),d?.classList.add("hidden"),document.body.style.overflow=""}document.querySelectorAll("[data-sidebar-toggle]").forEach(t=>{t.addEventListener("click",()=>{e?.classList.contains("is-open")?s():n()})}),d.addEventListener("click",s),document.addEventListener("keydown",t=>{t.key==="Escape"&&s()}),e.querySelectorAll("a").forEach(t=>t.addEventListener("click",()=>{window.matchMedia("(max-width: 1023px)").matches&&s()}))}document.addEventListener("astro:page-load",o);</script> <div class="chirpy-main-wrapper"> <div class="chirpy-shell"> <header class="chirpy-topbar" aria-label="Top Bar"> <div class="flex flex-1 items-center gap-2 px-1"> <button type="button" data-sidebar-toggle class="btn btn-ghost btn-sm btn-square lg:hidden" aria-label="切换菜单"> <svg width="18" height="18" data-icon="lucide:menu">   <symbol id="ai:lucide:menu" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5h16M4 12h16M4 19h16"/></symbol><use href="#ai:lucide:menu"></use>  </svg> </button> <nav aria-label="Breadcrumb" class="text-base-content/70 hidden truncate text-sm sm:block"> <ol class="flex items-center gap-1"> <li> <a href="/" class="hover:text-primary">首页</a> </li> <li class="flex items-center gap-1 truncate"> <span aria-hidden="true" class="text-base-content/40">
+/
+</span> <a href="/" class="hover:text-primary"> 文章 </a> </li><li class="flex items-center gap-1 truncate"> <span aria-hidden="true" class="text-base-content/40">
+/
+</span> <span class="text-base-content truncate font-medium">在 OpenCode 中使用 agentmemory 实现 AI 代理持久记忆</span> </li> </ol> </nav>  <a href="/" class="ml-1 truncate text-base font-semibold sm:hidden" aria-label="KN郑某某"> KN郑某某 </a> </div> <div class="chirpy-topbar__search"> <button type="button" class="search-pill" aria-label="打开搜索" title="打开搜索" data-search-open> <svg width="16" height="16" class="search-pill__icon" data-icon="lucide:search">   <symbol id="ai:lucide:search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m21 21l-4.34-4.34"/><circle cx="11" cy="11" r="8"/></g></symbol><use href="#ai:lucide:search"></use>  </svg> <span class="search-pill__label">搜索站点</span> <kbd class="search-pill__kbd" aria-hidden="true">/</kbd> </button> <dialog data-search-modal class="modal modal-top sm:modal-middle" aria-label="搜索" data-i18n="{&#34;placeholder&#34;:&#34;搜索站点&#34;,&#34;closeLabel&#34;:&#34;关闭搜索&#34;,&#34;clearLabel&#34;:&#34;清除&#34;,&#34;typeToStart&#34;:&#34;输入关键词搜索…&#34;,&#34;searching&#34;:&#34;搜索中…&#34;,&#34;noResultsFor&#34;:&#34;没有找到结果：&#34;,&#34;resultsCount&#34;:&#34;条结果&#34;,&#34;resultsCountOne&#34;:&#34;条结果&#34;,&#34;hintShortcut&#34;:&#34;按 / 随时打开搜索&#34;,&#34;hintNavigate&#34;:&#34;导航&#34;,&#34;hintSelect&#34;:&#34;打开&#34;}" data-pagefind-script="/_pagefind/pagefind.js"> <div class="modal-box bg-base-100 border-base-300 flex max-h-[80vh] w-full max-w-2xl flex-col overflow-hidden border p-0 shadow-2xl sm:rounded-xl">  <div class="border-base-300 flex items-center gap-3 border-b px-4 py-3 sm:px-5 sm:py-3.5"> <svg width="18" height="18" viewBox="0 0 24 24" class="text-base-content/70 shrink-0" aria-hidden="true" data-icon="lucide:search">   <use href="#ai:lucide:search"></use>  </svg> <input type="search" data-search-input class="text-base-content placeholder:text-base-content/45 min-w-0 flex-1 border-0 bg-transparent text-base font-medium outline-none focus:ring-0" placeholder="搜索站点" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="搜索"> <button type="button" data-search-clear class="text-base-content/70 hover:bg-base-200 hover:text-base-content hidden h-7 items-center rounded-md px-2 text-xs font-medium transition" aria-label="清除"> 清除 </button> <form method="dialog" class="shrink-0"> <button class="text-base-content/70 hover:bg-base-200 hover:text-base-content inline-flex h-7 w-7 items-center justify-center rounded-md transition" aria-label="关闭搜索" title="关闭搜索"> <svg width="16" height="16" data-icon="lucide:x">   <symbol id="ai:lucide:x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/></symbol><use href="#ai:lucide:x"></use>  </svg> </button> </form> </div>  <div data-search-results class="min-h-0 flex-1 overflow-y-auto"> <div class="px-5 py-12 text-center"> <div class="bg-base-200 text-base-content/45 mx-auto flex h-10 w-10 items-center justify-center rounded-full" aria-hidden="true"> <svg width="18" height="18" viewBox="0 0 24 24" data-icon="lucide:search">   <use href="#ai:lucide:search"></use>  </svg> </div> <p class="text-base-content/70 mt-3 text-sm">输入关键词搜索…</p> </div> </div>  <div class="border-base-300 bg-base-200/60 text-base-content/70 flex items-center justify-between gap-3 border-t px-4 py-2 text-[0.7rem] sm:px-5"> <div class="flex items-center gap-3"> <span class="inline-flex items-center gap-1.5"> <kbd class="kbd kbd-xs">↑</kbd><kbd class="kbd kbd-xs">↓</kbd> <span>导航</span> </span> <span class="hidden items-center gap-1.5 sm:inline-flex"> <kbd class="kbd kbd-xs">↵</kbd> <span>打开</span> </span> </div> <span class="inline-flex items-center gap-1.5"> <kbd class="kbd kbd-xs">Esc</kbd> <span class="hidden sm:inline">关闭搜索</span> </span> </div> </div> <form method="dialog" class="modal-backdrop"> <button>close</button> </form> </dialog> <script type="module" src="/_astro/SearchButton.astro_astro_type_script_index_0_lang.Dmndfq1C.js"></script>  </div> </header> <div class="flex flex-1 gap-10"> <div class="flex min-w-0 flex-1 flex-col"> <main id="main" aria-label="Main Content" class="min-w-0 flex-1 py-6 lg:pr-2"> <article class="px-1 py-6 sm:px-2 sm:py-8"> <header class="mb-8"> <h1 class="text-base-content text-3xl leading-tight font-extrabold tracking-tight sm:text-[2.25rem]"> 在 OpenCode 中使用 agentmemory 实现 AI 代理持久记忆 </h1> <p class="text-base-content/65 mt-3 text-lg">手把手教你为 OpenCode 配置 agentmemory，让 AI 代理拥有跨会话的持久化记忆能力，涵盖完整服务器和 Standalone 两种模式。</p> <div class="text-base-content/70 mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm"> <span class="inline-flex items-center gap-1"> <svg width="14" height="14" data-icon="lucide:calendar-days">   <symbol id="ai:lucide:calendar-days" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 2v4m8-4v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></g></symbol><use href="#ai:lucide:calendar-days"></use>  </svg> <time datetime="2026-05-27T00:00:00.000Z">2026年5月27日</time> </span>  <span class="inline-flex items-center gap-1"> <svg width="14" height="14" data-icon="lucide:folder">   <symbol id="ai:lucide:folder" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol><use href="#ai:lucide:folder"></use>  </svg> <a href="/categories/ai/" class="hover:text-primary"> AI </a>  </span> <span class="inline-flex items-center gap-1"> <svg width="14" height="14" data-icon="lucide:clock">   <symbol id="ai:lucide:clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></g></symbol><use href="#ai:lucide:clock"></use>  </svg> 2 分钟阅读 </span>  </div> </header> <figure class="post-hero mb-8"> <div class="post-hero__frame"> <img src="/_astro/cover.DGNqmSr1_1Hwbyg.webp" srcset="/_astro/cover.DGNqmSr1_Z1HgDNV.webp 480w, /_astro/cover.DGNqmSr1_1ieP5g.webp 768w, /_astro/cover.DGNqmSr1_1Hwbyg.webp 800w" alt sizes="(max-width: 768px) 100vw, 1024px" loading="eager" decoding="async" data-astro-image="constrained" data-astro-image-fit="cover" data-astro-image-pos="center" style="object-position: center" width="800" height="400" class="post-hero__img"> </div>  </figure> <div class="prose-chirpy max-w-none">  <p>AI 编程工具的问题在于：每次新会话，它都不记得之前做过什么。agentmemory 解决了这个问题——它通过 MCP 协议为 OpenCode 提供跨会话的持久化记忆。</p>
+<h2 id="什么是-agentmemory"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#什么是-agentmemory">什么是 agentmemory</a></h2>
+<p>agentmemory 是一个开源的记忆层，通过 <a href="https://modelcontextprotocol.io/" rel="nofollow noopener noreferrer" target="_blank">MCP（Model Context Protocol）</a> 为 AI 代理提供持久化记忆功能。它能自动捕获会话中的关键信息，包括代码修改、决策记录、错误处理经验等，并在后续会话中自动召回。</p>
+<p><strong>两种运行模式：</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>模式</th><th>特点</th><th>适用场景</th></tr></thead><tbody><tr><td><strong>完整服务器模式</strong></td><td>53 个 MCP 工具，混合搜索，自动捕获</td><td>日常开发、团队协作</td></tr><tr><td><strong>Standalone 模式</strong></td><td>7 个核心工具，无需服务器，即开即用</td><td>快速体验、轻量使用</td></tr></tbody></table>
+<h2 id="前提条件"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#前提条件">前提条件</a></h2>
+<ul>
+<li>已安装 Node.js（v18+）</li>
+<li>已安装 OpenCode</li>
+<li>（完整服务器模式）克隆 agentmemory 源码到本地</li>
+</ul>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.g4so9.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">git</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">clone</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">https://github.com/rohitg00/agentmemory.git</span></div></div><div class="ec-line"><div class="code"><span style="--0:#005CC5;--1:#6CB6FF">cd</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">agentmemory</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="git clone https://github.com/rohitg00/agentmemory.gitcd agentmemory"><div></div></button></div></figure></div>
+<hr>
+<h2 id="完整服务器模式"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#完整服务器模式">完整服务器模式</a></h2>
+<p>适合日常开发，功能最全。</p>
+<h3 id="第一步启动-agentmemory-服务器"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#第一步启动-agentmemory-服务器">第一步：启动 agentmemory 服务器</a></h3>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">npx</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">@agentmemory/agentmemory</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="npx @agentmemory/agentmemory"><div></div></button></div></figure></div>
+<p>服务器默认运行在 <code>http://localhost:3111</code>。验证服务状态：</p>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">curl</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">http://localhost:3111/agentmemory/health</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="curl http://localhost:3111/agentmemory/health"><div></div></button></div></figure></div>
+<h3 id="第二步配置-opencode-mcp"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#第二步配置-opencode-mcp">第二步：配置 OpenCode MCP</a></h3>
+<p>编辑 OpenCode 配置文件：</p>
+<ul>
+<li><strong>全局配置</strong>：<code>~/.config/opencode/opencode.json</code></li>
+<li><strong>项目配置</strong>：<code>.opencode/opencode.json</code>（项目根目录）</li>
+</ul>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="json"><code><div class="ec-line"><div class="code"><span style="--0:#24292E;--1:#ADBAC7">{</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#005CC5;--1:#8DDB8C">"mcp"</span><span style="--0:#24292E;--1:#ADBAC7">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#005CC5;--1:#8DDB8C">"agentmemory"</span><span style="--0:#24292E;--1:#ADBAC7">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"type"</span><span style="--0:#24292E;--1:#ADBAC7">: </span><span style="--0:#032F62;--1:#96D0FF">"local"</span><span style="--0:#24292E;--1:#ADBAC7">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"command"</span><span style="--0:#24292E;--1:#ADBAC7">: [</span><span style="--0:#032F62;--1:#96D0FF">"npx"</span><span style="--0:#24292E;--1:#ADBAC7">, </span><span style="--0:#032F62;--1:#96D0FF">"-y"</span><span style="--0:#24292E;--1:#ADBAC7">, </span><span style="--0:#032F62;--1:#96D0FF">"@agentmemory/mcp"</span><span style="--0:#24292E;--1:#ADBAC7">],</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"env"</span><span style="--0:#24292E;--1:#ADBAC7">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#005CC5;--1:#8DDB8C">"AGENTMEMORY_URL"</span><span style="--0:#24292E;--1:#ADBAC7">: </span><span style="--0:#032F62;--1:#96D0FF">"http://localhost:3111"</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292E;--1:#ADBAC7">      </span></span><span style="--0:#24292E;--1:#ADBAC7">},</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"enabled"</span><span style="--0:#24292E;--1:#ADBAC7">: </span><span style="--0:#005CC5;--1:#6CB6FF">true</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292E;--1:#ADBAC7">    </span></span><span style="--0:#24292E;--1:#ADBAC7">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292E;--1:#ADBAC7">  </span></span><span style="--0:#24292E;--1:#ADBAC7">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292E;--1:#ADBAC7">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="{  &#x22;mcp&#x22;: {    &#x22;agentmemory&#x22;: {      &#x22;type&#x22;: &#x22;local&#x22;,      &#x22;command&#x22;: [&#x22;npx&#x22;, &#x22;-y&#x22;, &#x22;@agentmemory/mcp&#x22;],      &#x22;env&#x22;: {        &#x22;AGENTMEMORY_URL&#x22;: &#x22;http://localhost:3111&#x22;      },      &#x22;enabled&#x22;: true    }  }}"><div></div></button></div></figure></div>
+<h3 id="第三步安装自动捕获插件"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#第三步安装自动捕获插件">第三步：安装自动捕获插件</a></h3>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">mkdir</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#005CC5;--1:#6CB6FF">-p</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">~/.config/opencode/plugins</span></div></div><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">cp</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">agentmemory/plugin/opencode/agentmemory-capture.ts</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">~/.config/opencode/plugins/</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="mkdir -p ~/.config/opencode/pluginscp agentmemory/plugin/opencode/agentmemory-capture.ts ~/.config/opencode/plugins/"><div></div></button></div></figure></div>
+<p>在 <code>opencode.json</code> 中启用插件：</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="json"><code><div class="ec-line"><div class="code"><span style="--0:#24292E;--1:#ADBAC7">{</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#005CC5;--1:#8DDB8C">"mcp"</span><span style="--0:#24292E;--1:#ADBAC7">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#005CC5;--1:#8DDB8C">"agentmemory"</span><span style="--0:#24292E;--1:#ADBAC7">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"type"</span><span style="--0:#24292E;--1:#ADBAC7">: </span><span style="--0:#032F62;--1:#96D0FF">"local"</span><span style="--0:#24292E;--1:#ADBAC7">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"command"</span><span style="--0:#24292E;--1:#ADBAC7">: [</span><span style="--0:#032F62;--1:#96D0FF">"npx"</span><span style="--0:#24292E;--1:#ADBAC7">, </span><span style="--0:#032F62;--1:#96D0FF">"-y"</span><span style="--0:#24292E;--1:#ADBAC7">, </span><span style="--0:#032F62;--1:#96D0FF">"@agentmemory/mcp"</span><span style="--0:#24292E;--1:#ADBAC7">],</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"env"</span><span style="--0:#24292E;--1:#ADBAC7">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#005CC5;--1:#8DDB8C">"AGENTMEMORY_URL"</span><span style="--0:#24292E;--1:#ADBAC7">: </span><span style="--0:#032F62;--1:#96D0FF">"http://localhost:3111"</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292E;--1:#ADBAC7">      </span></span><span style="--0:#24292E;--1:#ADBAC7">},</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"enabled"</span><span style="--0:#24292E;--1:#ADBAC7">: </span><span style="--0:#005CC5;--1:#6CB6FF">true</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292E;--1:#ADBAC7">    </span></span><span style="--0:#24292E;--1:#ADBAC7">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292E;--1:#ADBAC7">  </span></span><span style="--0:#24292E;--1:#ADBAC7">},</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#005CC5;--1:#8DDB8C">"plugin"</span><span style="--0:#24292E;--1:#ADBAC7">: [</span><span style="--0:#032F62;--1:#96D0FF">"./plugins/agentmemory-capture.ts"</span><span style="--0:#24292E;--1:#ADBAC7">]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292E;--1:#ADBAC7">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="{  &#x22;mcp&#x22;: {    &#x22;agentmemory&#x22;: {      &#x22;type&#x22;: &#x22;local&#x22;,      &#x22;command&#x22;: [&#x22;npx&#x22;, &#x22;-y&#x22;, &#x22;@agentmemory/mcp&#x22;],      &#x22;env&#x22;: {        &#x22;AGENTMEMORY_URL&#x22;: &#x22;http://localhost:3111&#x22;      },      &#x22;enabled&#x22;: true    }  },  &#x22;plugin&#x22;: [&#x22;./plugins/agentmemory-capture.ts&#x22;]}"><div></div></button></div></figure></div>
+<h3 id="第四步添加斜杠命令"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#第四步添加斜杠命令">第四步：添加斜杠命令</a></h3>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">mkdir</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#005CC5;--1:#6CB6FF">-p</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">~/.config/opencode/commands</span></div></div><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">cp</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">agentmemory/plugin/opencode/commands/recall.md</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">~/.config/opencode/commands/</span></div></div><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">cp</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">agentmemory/plugin/opencode/commands/remember.md</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">~/.config/opencode/commands/</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="mkdir -p ~/.config/opencode/commandscp agentmemory/plugin/opencode/commands/recall.md ~/.config/opencode/commands/cp agentmemory/plugin/opencode/commands/remember.md ~/.config/opencode/commands/"><div></div></button></div></figure></div>
+<h3 id="第五步重启-opencode"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#第五步重启-opencode">第五步：重启 OpenCode</a></h3>
+<p>关闭并重新打开 OpenCode，新会话自动启用 agentmemory。</p>
+<hr>
+<h2 id="standalone-模式"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#standalone-模式">Standalone 模式</a></h2>
+<p>无需启动完整服务器，直接在 MCP 客户端进程中运行。</p>
+<h3 id="快速配置"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#快速配置">快速配置</a></h3>
+<p>编辑 <code>~/.config/opencode/opencode.json</code> 或 <code>.opencode/opencode.json</code>：</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="json"><code><div class="ec-line"><div class="code"><span style="--0:#24292E;--1:#ADBAC7">{</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#005CC5;--1:#8DDB8C">"mcp"</span><span style="--0:#24292E;--1:#ADBAC7">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#005CC5;--1:#8DDB8C">"agentmemory"</span><span style="--0:#24292E;--1:#ADBAC7">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"type"</span><span style="--0:#24292E;--1:#ADBAC7">: </span><span style="--0:#032F62;--1:#96D0FF">"local"</span><span style="--0:#24292E;--1:#ADBAC7">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"command"</span><span style="--0:#24292E;--1:#ADBAC7">: [</span><span style="--0:#032F62;--1:#96D0FF">"npx"</span><span style="--0:#24292E;--1:#ADBAC7">, </span><span style="--0:#032F62;--1:#96D0FF">"-y"</span><span style="--0:#24292E;--1:#ADBAC7">, </span><span style="--0:#032F62;--1:#96D0FF">"@agentmemory/mcp"</span><span style="--0:#24292E;--1:#ADBAC7">],</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"enabled"</span><span style="--0:#24292E;--1:#ADBAC7">: </span><span style="--0:#005CC5;--1:#6CB6FF">true</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292E;--1:#ADBAC7">    </span></span><span style="--0:#24292E;--1:#ADBAC7">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292E;--1:#ADBAC7">  </span></span><span style="--0:#24292E;--1:#ADBAC7">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292E;--1:#ADBAC7">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="{  &#x22;mcp&#x22;: {    &#x22;agentmemory&#x22;: {      &#x22;type&#x22;: &#x22;local&#x22;,      &#x22;command&#x22;: [&#x22;npx&#x22;, &#x22;-y&#x22;, &#x22;@agentmemory/mcp&#x22;],      &#x22;enabled&#x22;: true    }  }}"><div></div></button></div></figure></div>
+<p><strong>注意：</strong> Standalone 模式不需要 <code>AGENTMEMORY_URL</code> 环境变量。</p>
+<p>也可以直接命令行运行：</p>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#616972;--1:#949EA8"># 方式 1</span></div></div><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">npx</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#005CC5;--1:#6CB6FF">-y</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">@agentmemory/agentmemory</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">mcp</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#616972;--1:#949EA8"># 方式 2（shim 包）</span></div></div><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">npx</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#005CC5;--1:#6CB6FF">-y</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">@agentmemory/mcp</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="npx -y @agentmemory/agentmemory mcpnpx -y @agentmemory/mcp"><div></div></button></div></figure></div>
+<h3 id="数据存储"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#数据存储">数据存储</a></h3>
+<p>数据存储在用户目录下：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>系统</th><th>路径</th></tr></thead><tbody><tr><td>Windows</td><td><code>%USERPROFILE%\.agentmemory\standalone.json</code></td></tr><tr><td>macOS/Linux</td><td><code>~/.agentmemory/standalone.json</code></td></tr></tbody></table>
+<blockquote>
+<p>如果进程被强制终止（SIGKILL），可能丢失未保存的数据。重启 MCP 进程后，之前保存的记忆仍然存在。</p>
+</blockquote>
+<hr>
+<h2 id="功能详解"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#功能详解">功能详解</a></h2>
+<h3 id="自动捕获的内容"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#自动捕获的内容">自动捕获的内容</a></h3>
+<p>完整服务器模式下，agentmemory 会自动捕获以下信息：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>类别</th><th>捕获内容</th></tr></thead><tbody><tr><td><strong>会话生命周期</strong></td><td>会话创建、空闲、压缩、错误</td></tr><tr><td><strong>用户消息</strong></td><td>用户提示（隐私过滤后）</td></tr><tr><td><strong>助手响应</strong></td><td>助手回复、token 使用、成本</td></tr><tr><td><strong>工具使用</strong></td><td>文件读写、搜索、命令执行</td></tr><tr><td><strong>文件编辑</strong></td><td>编辑的文件路径</td></tr><tr><td><strong>任务追踪</strong></td><td>待办事项更新</td></tr></tbody></table>
+<h3 id="斜杠命令"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#斜杠命令">斜杠命令</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>命令</th><th>说明</th></tr></thead><tbody><tr><td><code>/recall &#x3C;查询></code></td><td>搜索过去的观察记录和经验教训</td></tr><tr><td><code>/remember &#x3C;文本></code></td><td>保存洞察到长期记忆</td></tr></tbody></table>
+<h3 id="mcp-工具"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#mcp-工具">MCP 工具</a></h3>
+<p>完整服务器模式提供 53 个 MCP 工具，核心工具包括：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>工具</th><th>说明</th></tr></thead><tbody><tr><td><code>memory_save</code></td><td>保存洞察、决策或事实</td></tr><tr><td><code>memory_recall</code></td><td>搜索过去的观察记录</td></tr><tr><td><code>memory_smart_search</code></td><td>混合语义+关键词搜索</td></tr><tr><td><code>memory_sessions</code></td><td>列出最近的会话</td></tr><tr><td><code>memory_file_history</code></td><td>获取特定文件的历史记录</td></tr><tr><td><code>memory_lesson_save</code></td><td>保存经验教训</td></tr><tr><td><code>memory_lesson_recall</code></td><td>搜索经验教训</td></tr><tr><td><code>memory_patterns</code></td><td>检测重复模式</td></tr><tr><td><code>memory_consolidate</code></td><td>运行 4 层记忆整合管道</td></tr></tbody></table>
+<p>Standalone 模式提供 7 个核心工具：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>工具</th><th>说明</th></tr></thead><tbody><tr><td><code>memory_save</code></td><td>保存记忆到本地文件</td></tr><tr><td><code>memory_recall</code></td><td>搜索过去的观察记录</td></tr><tr><td><code>memory_smart_search</code></td><td>混合语义+关键词搜索</td></tr><tr><td><code>memory_sessions</code></td><td>列出最近的会话</td></tr><tr><td><code>memory_export</code></td><td>导出所有记忆数据</td></tr><tr><td><code>memory_audit</code></td><td>查看操作审计日志</td></tr><tr><td><code>memory_governance_delete</code></td><td>删除特定记忆</td></tr></tbody></table>
+<hr>
+<h2 id="使用示例"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#使用示例">使用示例</a></h2>
+<h3 id="保存重要决策"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#保存重要决策">保存重要决策</a></h3>
+<p>在对话中告诉代理：</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">请记住：我们选择了 jose 而不是 jsonwebtoken 来处理 JWT，</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">因为它支持 Edge 运行时。</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="请记住：我们选择了 jose 而不是 jsonwebtoken 来处理 JWT，因为它支持 Edge 运行时。"><div></div></button></div></figure></div>
+<p>代理会自动调用 <code>memory_save</code> 保存这条决策。</p>
+<h3 id="回忆之前的上下文"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#回忆之前的上下文">回忆之前的上下文</a></h3>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">recall 我们之前是如何处理用户认证的？</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="recall 我们之前是如何处理用户认证的？"><div></div></button></div></figure></div>
+<p>或者直接问：</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">我们之前做过什么认证相关的工作？</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="我们之前做过什么认证相关的工作？"><div></div></button></div></figure></div>
+<p>代理会使用 <code>memory_smart_search</code> 搜索相关记忆。</p>
+<h3 id="查看文件历史"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#查看文件历史">查看文件历史</a></h3>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">这个文件之前有什么修改历史？</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="这个文件之前有什么修改历史？"><div></div></button></div></figure></div>
+<p>代理会调用 <code>memory_file_history</code> 查找相关记录。</p>
+<hr>
+<h2 id="上下文注入机制"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#上下文注入机制">上下文注入机制</a></h2>
+<p>OpenCode 使用直接注入方式将记忆整合到对话中：</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#24292e;--1:#adbac7">System prompt = [OpenCode 指令] + [记忆上下文] + [文件丰富信息] + [用户消息]</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292e;--1:#adbac7">                                </span></span><span style="--0:#24292e;--1:#adbac7">↑                ↑</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292e;--1:#adbac7">                          </span></span><span style="--0:#24292e;--1:#adbac7">首次会话时注入      每次涉及文件的轮次注入</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="System prompt = [OpenCode 指令] + [记忆上下文] + [文件丰富信息] + [用户消息]                                ↑                ↑                          首次会话时注入      每次涉及文件的轮次注入"><div></div></button></div></figure></div>
+<ul>
+<li><strong>记忆上下文</strong>：会话开始时注入项目概况、最近会话摘要</li>
+<li><strong>文件丰富信息</strong>：每次编辑文件时注入该文件的历史观察、相关 bug</li>
+</ul>
+<hr>
+<h2 id="两种模式对比"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#两种模式对比">两种模式对比</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>功能</th><th>完整服务器模式</th><th>Standalone 模式</th></tr></thead><tbody><tr><td><strong>MCP 工具数量</strong></td><td>53 个</td><td>7 个</td></tr><tr><td><strong>REST API</strong></td><td>端口 3111</td><td>无</td></tr><tr><td><strong>自动捕获插件</strong></td><td>22 个 hooks</td><td>无</td></tr><tr><td><strong>向量搜索</strong></td><td>BM25 + Vector + Graph</td><td>仅关键词匹配</td></tr><tr><td><strong>数据持久化</strong></td><td>SQLite</td><td>JSON 文件</td></tr><tr><td><strong>启动时间</strong></td><td>3-5 秒</td><td>&#x3C; 1 秒</td></tr><tr><td><strong>搜索准确度</strong></td><td>95.2% (R@5)</td><td>~70%（仅关键词）</td></tr></tbody></table>
+<p><strong>选择建议：</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>场景</th><th>推荐模式</th></tr></thead><tbody><tr><td>日常开发</td><td>完整服务器</td></tr><tr><td>快速测试</td><td>Standalone</td></tr><tr><td>团队协作</td><td>完整服务器</td></tr><tr><td>受限环境</td><td>Standalone</td></tr></tbody></table>
+<hr>
+<h2 id="混合使用"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#混合使用">混合使用</a></h2>
+<p>可以在同一项目中配置两种模式，通过切换 <code>enabled</code> 字段选择：</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="json"><code><div class="ec-line"><div class="code"><span style="--0:#24292E;--1:#ADBAC7">{</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#005CC5;--1:#8DDB8C">"mcp"</span><span style="--0:#24292E;--1:#ADBAC7">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#005CC5;--1:#8DDB8C">"agentmemory-full"</span><span style="--0:#24292E;--1:#ADBAC7">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"type"</span><span style="--0:#24292E;--1:#ADBAC7">: </span><span style="--0:#032F62;--1:#96D0FF">"local"</span><span style="--0:#24292E;--1:#ADBAC7">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"command"</span><span style="--0:#24292E;--1:#ADBAC7">: [</span><span style="--0:#032F62;--1:#96D0FF">"npx"</span><span style="--0:#24292E;--1:#ADBAC7">, </span><span style="--0:#032F62;--1:#96D0FF">"-y"</span><span style="--0:#24292E;--1:#ADBAC7">, </span><span style="--0:#032F62;--1:#96D0FF">"@agentmemory/mcp"</span><span style="--0:#24292E;--1:#ADBAC7">],</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"env"</span><span style="--0:#24292E;--1:#ADBAC7">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#005CC5;--1:#8DDB8C">"AGENTMEMORY_URL"</span><span style="--0:#24292E;--1:#ADBAC7">: </span><span style="--0:#032F62;--1:#96D0FF">"http://localhost:3111"</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292E;--1:#ADBAC7">      </span></span><span style="--0:#24292E;--1:#ADBAC7">},</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"enabled"</span><span style="--0:#24292E;--1:#ADBAC7">: </span><span style="--0:#005CC5;--1:#6CB6FF">false</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292E;--1:#ADBAC7">    </span></span><span style="--0:#24292E;--1:#ADBAC7">},</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#005CC5;--1:#8DDB8C">"agentmemory-standalone"</span><span style="--0:#24292E;--1:#ADBAC7">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"type"</span><span style="--0:#24292E;--1:#ADBAC7">: </span><span style="--0:#032F62;--1:#96D0FF">"local"</span><span style="--0:#24292E;--1:#ADBAC7">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"command"</span><span style="--0:#24292E;--1:#ADBAC7">: [</span><span style="--0:#032F62;--1:#96D0FF">"npx"</span><span style="--0:#24292E;--1:#ADBAC7">, </span><span style="--0:#032F62;--1:#96D0FF">"-y"</span><span style="--0:#24292E;--1:#ADBAC7">, </span><span style="--0:#032F62;--1:#96D0FF">"@agentmemory/mcp"</span><span style="--0:#24292E;--1:#ADBAC7">],</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#005CC5;--1:#8DDB8C">"enabled"</span><span style="--0:#24292E;--1:#ADBAC7">: </span><span style="--0:#005CC5;--1:#6CB6FF">true</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292E;--1:#ADBAC7">    </span></span><span style="--0:#24292E;--1:#ADBAC7">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#24292E;--1:#ADBAC7">  </span></span><span style="--0:#24292E;--1:#ADBAC7">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#24292E;--1:#ADBAC7">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="{  &#x22;mcp&#x22;: {    &#x22;agentmemory-full&#x22;: {      &#x22;type&#x22;: &#x22;local&#x22;,      &#x22;command&#x22;: [&#x22;npx&#x22;, &#x22;-y&#x22;, &#x22;@agentmemory/mcp&#x22;],      &#x22;env&#x22;: {        &#x22;AGENTMEMORY_URL&#x22;: &#x22;http://localhost:3111&#x22;      },      &#x22;enabled&#x22;: false    },    &#x22;agentmemory-standalone&#x22;: {      &#x22;type&#x22;: &#x22;local&#x22;,      &#x22;command&#x22;: [&#x22;npx&#x22;, &#x22;-y&#x22;, &#x22;@agentmemory/mcp&#x22;],      &#x22;enabled&#x22;: true    }  }}"><div></div></button></div></figure></div>
+<p>开发阶段用完整服务器，CI/CD 或测试环境切换到 Standalone。</p>
+<hr>
+<h2 id="进阶配置"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#进阶配置">进阶配置</a></h2>
+<h3 id="使用本地嵌入推荐免费"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#使用本地嵌入推荐免费">使用本地嵌入（推荐，免费）</a></h3>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">npm</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">install</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">@xenova/transformers</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="npm install @xenova/transformers"><div></div></button></div></figure></div>
+<p>本地模型进行向量搜索，无需 API 费用。</p>
+<h3 id="启用知识图谱"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#启用知识图谱">启用知识图谱</a></h3>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#005CC5;--1:#6CB6FF">set</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">GRAPH_EXTRACTION_ENABLED=</span><span style="--0:#005CC5;--1:#6CB6FF">true</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="set GRAPH_EXTRACTION_ENABLED=true"><div></div></button></div></figure></div>
+<h3 id="修改记忆保留策略"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#修改记忆保留策略">修改记忆保留策略</a></h3>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">curl</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#005CC5;--1:#6CB6FF">-X</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">POST</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">http://localhost:3111/agentmemory/configure</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#005CC5;--1:#F5776E">\</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#005CC5;--1:#6CB6FF">-H</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">"Content-Type: application/json"</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#005CC5;--1:#F5776E">\</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#005CC5;--1:#6CB6FF">-d</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">'{"retention_days": 90}'</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="curl -X POST http://localhost:3111/agentmemory/configure \  -H &#x22;Content-Type: application/json&#x22; \  -d &#x27;{&#x22;retention_days&#x22;: 90}&#x27;"><div></div></button></div></figure></div>
+<h3 id="数据备份"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#数据备份">数据备份</a></h3>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#616972;--1:#949EA8"># Windows</span></div></div><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">xcopy</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">/E</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">/I</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">data</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">data_backup</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#616972;--1:#949EA8"># macOS/Linux</span></div></div><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">cp</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#005CC5;--1:#6CB6FF">-r</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">data</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">data_backup</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="xcopy /E /I data data_backupcp -r data data_backup"><div></div></button></div></figure></div>
+<h3 id="从-standalone-迁移到完整服务器"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#从-standalone-迁移到完整服务器">从 Standalone 迁移到完整服务器</a></h3>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#616972;--1:#949EA8"># 在 Standalone 模式中通过 memory_export 导出数据</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#616972;--1:#949EA8"># 在完整服务器中导入</span></div></div><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">curl</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#005CC5;--1:#6CB6FF">-X</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">POST</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">http://localhost:3111/agentmemory/import</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#005CC5;--1:#F5776E">\</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#005CC5;--1:#6CB6FF">-H</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">"Content-Type: application/json"</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#005CC5;--1:#F5776E">\</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#005CC5;--1:#6CB6FF">-d</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">@exported_data.json</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="curl -X POST http://localhost:3111/agentmemory/import \  -H &#x22;Content-Type: application/json&#x22; \  -d @exported_data.json"><div></div></button></div></figure></div>
+<hr>
+<h2 id="故障排除"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#故障排除">故障排除</a></h2>
+<h3 id="服务器无法连接"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#服务器无法连接">服务器无法连接</a></h3>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">curl</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">http://localhost:3111/agentmemory/health</span></div></div><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">netstat</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#005CC5;--1:#6CB6FF">-ano</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#BF3441;--1:#F5776E">|</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#6F42C1;--1:#F69D50">findstr</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">:3111</span></div></div><div class="ec-line"><div class="code"><span style="--0:#6F42C1;--1:#F69D50">npx</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#032F62;--1:#96D0FF">@agentmemory/agentmemory</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#005CC5;--1:#6CB6FF">--port</span><span style="--0:#24292E;--1:#ADBAC7"> </span><span style="--0:#005CC5;--1:#6CB6FF">3112</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="curl http://localhost:3111/agentmemory/healthnetstat -ano | findstr :3111npx @agentmemory/agentmemory --port 3112"><div></div></button></div></figure></div>
+<h3 id="mcp-工具不可用"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#mcp-工具不可用">MCP 工具不可用</a></h3>
+<ol>
+<li>确保 agentmemory 服务器正在运行（完整模式）</li>
+<li>检查 <code>AGENTMEMORY_URL</code> 环境变量是否正确</li>
+<li>重启 OpenCode</li>
+</ol>
+<h3 id="插件不工作"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#插件不工作">插件不工作</a></h3>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#BF3441;--1:#F5776E">export</span><span style="--0:#24292E;--1:#ADBAC7"> OPENCODE_AGENTMEMORY_DEBUG</span><span style="--0:#BF3441;--1:#F5776E">=</span><span style="--0:#005CC5;--1:#6CB6FF">1</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="export OPENCODE_AGENTMEMORY_DEBUG=1"><div></div></button></div></figure></div>
+<p>查看控制台输出的错误信息。</p>
+<h3 id="standalone-模式记忆丢失"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#standalone-模式记忆丢失">Standalone 模式记忆丢失</a></h3>
+<p>检查 <code>~/.agentmemory/standalone.json</code> 文件是否存在。仅使用关键词匹配时搜索结果可能不准确，建议启动完整服务器获得向量搜索功能。</p>
+<hr>
+<h2 id="总结"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#总结">总结</a></h2>
+<p>✅ agentmemory 通过 MCP 协议为 OpenCode 提供跨会话持久记忆</p>
+<p>✅ 完整服务器模式适合日常开发，功能全面，搜索准确度高</p>
+<p>✅ Standalone 模式零配置即开即用，适合快速体验</p>
+<p>✅ 两种模式可以混合使用，按场景切换</p>
+<p>✅ 记忆数据存储在本地，支持备份和迁移</p>
+<h2 id="相关文章"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#相关文章">相关文章</a></h2>
+<ul>
+<li><a href="/posts/ai/ai-coding-getting-started/">AI 编程入门指南</a></li>
+<li><a href="/posts/ai/llm-wiki/">LLM Wiki：用大语言模型构建个人知识库</a></li>
+</ul>
+<h2 id="参考资源"><a class="heading-anchor" aria-hidden="true" tabindex="-1" href="#参考资源">参考资源</a></h2>
+<ul>
+<li><a href="https://github.com/rohitg00/agentmemory" rel="nofollow noopener noreferrer" target="_blank">agentmemory GitHub</a></li>
+<li><a href="https://github.com/opencode-ai/opencode" rel="nofollow noopener noreferrer" target="_blank">OpenCode GitHub</a></li>
+<li><a href="https://modelcontextprotocol.io/" rel="nofollow noopener noreferrer" target="_blank">MCP 协议规范</a></li>
+</ul>  </div> <footer class="border-base-300 mt-10 flex flex-wrap items-center gap-2 border-t pt-6"> <span class="text-base-content/70 text-sm font-semibold tracking-wide uppercase"> 标签 </span> <a href="/tags/ai/" class="post-tag text-xs"> AI </a><a href="/tags/opencode/" class="post-tag text-xs"> OpenCode </a><a href="/tags/mcp/" class="post-tag text-xs"> MCP </a><a href="/tags/5f00-53d1-6548-7387/" class="post-tag text-xs"> 开发效率 </a> </footer> <nav aria-label="Post navigation" class="border-base-300 mt-10 grid gap-4 border-t pt-6 sm:grid-cols-2"> <a href="/posts/ai/ai-coding-getting-started/" rel="prev" class="card bg-base-200 hover:bg-base-300 transition-colors"> <div class="card-body"> <p class="text-base-content/70 text-xs tracking-wide uppercase"> <svg width="12" height="12" viewBox="0 0 24 24" class="inline -rotate-90 align-baseline" data-icon="lucide:arrow-up">   <use href="#ai:lucide:arrow-up"></use>  </svg> 上一篇 </p> <p class="font-semibold">AI 编程入门指南</p> </div> </a> <a href="/posts/tools/pm2-guide/" rel="next" class="card bg-base-200 hover:bg-base-300 transition-colors sm:text-right"> <div class="card-body"> <p class="text-base-content/70 text-xs tracking-wide uppercase"> 下一篇 <svg width="12" height="12" viewBox="0 0 24 24" class="inline rotate-90 align-baseline" data-icon="lucide:arrow-up">   <use href="#ai:lucide:arrow-up"></use>  </svg> </p> <p class="font-semibold">PM2 入门教程：Node.js 进程管理利器</p> </div> </a> </nav> <section class="border-base-300 mt-12 border-t pt-8" aria-labelledby="comments-heading"> <h2 id="comments-heading" class="mb-4 text-xl font-semibold">评论</h2> <div data-giscus-mount data-repo="imknn/blog" data-repo-id="R_kgDOSZJoZA" data-category="General" data-category-id="DIC_kwDOSZJoZM4C8sTk" data-mapping="title" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-loading="lazy" data-locale="zh-CN"></div>   </section> <script type="module">function d(){return document.documentElement.getAttribute("data-theme")==="chirpy-dark"?"dark":"light"}function s(){const t=document.querySelector("[data-giscus-mount]");if(!t||t.dataset.mounted==="true")return;t.dataset.mounted="true";const a=document.createElement("script");a.src="https://giscus.app/client.js",a.async=!0,a.crossOrigin="anonymous";const e=(o,n)=>{n!==void 0&&a.setAttribute(o,n)};e("data-repo",t.dataset.repo),e("data-repo-id",t.dataset.repoId),e("data-category",t.dataset.category),e("data-category-id",t.dataset.categoryId),e("data-mapping",t.dataset.mapping),e("data-strict",t.dataset.strict),e("data-reactions-enabled",t.dataset.reactionsEnabled),e("data-emit-metadata",t.dataset.emitMetadata),e("data-input-position",t.dataset.inputPosition),e("data-loading",t.dataset.loading),e("data-lang",t.dataset.locale),e("data-theme",d()),t.appendChild(a)}function i(){const t=document.querySelector("iframe.giscus-frame");t?.contentWindow&&t.contentWindow.postMessage({giscus:{setConfig:{theme:d()}}},"https://giscus.app")}s();document.addEventListener("theme-change",i);document.addEventListener("astro:page-load",s);</script> </article>  </main> <footer aria-label="Site Info" class="border-base-300 text-base-content/70 mt-10 flex flex-col gap-1 border-t py-6 text-sm lg:flex-row lg:items-center lg:justify-between"> <p> 
+© <time>2026</time> <a href="https://github.com/imknn" rel="noopener" class="hover:text-primary"> KN郑某某 </a>
+. 版权所有。  · <a href="/privacy" class="hover:text-primary"> 隐私政策 </a>  </p> <p> 由 <a href="https://astro.build" rel="noopener" class="hover:text-primary">
+Astro
+</a> 
+· 主题 <a href="https://github.com/kannansuresh/chirping-astro" rel="noopener" class="hover:text-primary"> Chirping Astro </a>  </p> </footer> </div> <aside class="chirpy-panel-rail" aria-label="Sidebar widgets"> <div class="chirpy-panel"> <section class="mb-8"> <h2 class="text-base-content/70 mb-3 text-xs font-bold tracking-[0.1em] uppercase"> 最近更新 </h2> <ul class="chirpy-aside-list"> <li> <a href="/posts/ai/claude-code-getting-started/" class="chirpy-aside-item truncate"> Claude Code 中的 AskUserQuestion：让 AI 主动问你问题 </a> </li><li> <a href="/posts/ai/opencode-codegraph-tutorial/" class="chirpy-aside-item truncate"> OpenCode + CodeGraph：让 AI 代理不再浪费 Token 猜代码 </a> </li><li> <a href="/posts/tools/pm2-guide/" class="chirpy-aside-item truncate"> PM2 入门教程：Node.js 进程管理利器 </a> </li><li> <a href="/posts/ai/opencode-agentmemory/" class="chirpy-aside-item truncate"> 在 OpenCode 中使用 agentmemory 实现 AI 代理持久记忆 </a> </li><li> <a href="/posts/ai/ai-coding-getting-started/" class="chirpy-aside-item truncate"> AI 编程入门指南 </a> </li> </ul> </section> <section class="mb-8"> <h2 class="text-base-content/70 mb-3 text-xs font-bold tracking-[0.1em] uppercase"> 分类 </h2> <ul class="chirpy-aside-list"> <li> <a href="/categories/docker/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">Docker</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">20</span> </a> </li><li> <a href="/categories/install/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">安装手册</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">15</span> </a> </li><li> <a href="/categories/linux/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">Linux</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">14</span> </a> </li><li> <a href="/categories/algorithm/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">算法基础</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">11</span> </a> </li><li> <a href="/categories/tools/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">工具</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">8</span> </a> </li><li> <a href="/categories/memo/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">备忘</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">6</span> </a> </li><li> <a href="/categories/ai/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">AI</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">5</span> </a> </li><li> <a href="/categories/website/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">建站</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">4</span> </a> </li><li> <a href="/categories/java/" class="chirpy-aside-item flex items-center justify-between"> <span class="truncate">Java</span> <span class="text-base-content/40 ml-1 shrink-0 text-xs">3</span> </a> </li> </ul> </section> <section> <h2 class="text-base-content/70 mb-3 text-xs font-bold tracking-[0.1em] uppercase"> 热门标签 </h2> <div class="flex flex-wrap gap-2"> <a href="/tags/docker/" class="post-tag"> Docker </a><a href="/tags/linux/" class="post-tag"> Linux </a><a href="/tags/5b89-5168/" class="post-tag"> 安全 </a><a href="/tags/7b97-6cd5/" class="post-tag"> 算法 </a><a href="/tags/java/" class="post-tag"> Java </a><a href="/tags/547d-4ee4-884c/" class="post-tag"> 命令行 </a><a href="/tags/go/" class="post-tag"> Go </a><a href="/tags/mysql/" class="post-tag"> MySQL </a> </div> </section> </div> <nav aria-labelledby="toc-heading" class="toc sticky top-20 hidden max-h-[calc(100vh-6rem)] overflow-y-auto pr-2 text-sm xl:block"><h2 id="toc-heading" class="text-base-content/60 mb-3 text-xs font-semibold tracking-wide uppercase">目录</h2><ol class="toc-list space-y-1"><li class="toc-level-2" data-toc-parent="什么是-agentmemory"><a href="#什么是-agentmemory" data-toc-link="什么是-agentmemory" data-toc-depth="2">什么是 agentmemory</a></li><li class="toc-level-2" data-toc-parent="前提条件"><a href="#前提条件" data-toc-link="前提条件" data-toc-depth="2">前提条件</a></li><li class="toc-level-2" data-toc-parent="完整服务器模式"><a href="#完整服务器模式" data-toc-link="完整服务器模式" data-toc-depth="2">完整服务器模式</a></li><li class="toc-level-3" data-toc-parent="完整服务器模式"><a href="#第一步启动-agentmemory-服务器" data-toc-link="第一步启动-agentmemory-服务器" data-toc-depth="3">第一步：启动 agentmemory 服务器</a></li><li class="toc-level-3" data-toc-parent="完整服务器模式"><a href="#第二步配置-opencode-mcp" data-toc-link="第二步配置-opencode-mcp" data-toc-depth="3">第二步：配置 OpenCode MCP</a></li><li class="toc-level-3" data-toc-parent="完整服务器模式"><a href="#第三步安装自动捕获插件" data-toc-link="第三步安装自动捕获插件" data-toc-depth="3">第三步：安装自动捕获插件</a></li><li class="toc-level-3" data-toc-parent="完整服务器模式"><a href="#第四步添加斜杠命令" data-toc-link="第四步添加斜杠命令" data-toc-depth="3">第四步：添加斜杠命令</a></li><li class="toc-level-3" data-toc-parent="完整服务器模式"><a href="#第五步重启-opencode" data-toc-link="第五步重启-opencode" data-toc-depth="3">第五步：重启 OpenCode</a></li><li class="toc-level-2" data-toc-parent="standalone-模式"><a href="#standalone-模式" data-toc-link="standalone-模式" data-toc-depth="2">Standalone 模式</a></li><li class="toc-level-3" data-toc-parent="standalone-模式"><a href="#快速配置" data-toc-link="快速配置" data-toc-depth="3">快速配置</a></li><li class="toc-level-3" data-toc-parent="standalone-模式"><a href="#数据存储" data-toc-link="数据存储" data-toc-depth="3">数据存储</a></li><li class="toc-level-2" data-toc-parent="功能详解"><a href="#功能详解" data-toc-link="功能详解" data-toc-depth="2">功能详解</a></li><li class="toc-level-3" data-toc-parent="功能详解"><a href="#自动捕获的内容" data-toc-link="自动捕获的内容" data-toc-depth="3">自动捕获的内容</a></li><li class="toc-level-3" data-toc-parent="功能详解"><a href="#斜杠命令" data-toc-link="斜杠命令" data-toc-depth="3">斜杠命令</a></li><li class="toc-level-3" data-toc-parent="功能详解"><a href="#mcp-工具" data-toc-link="mcp-工具" data-toc-depth="3">MCP 工具</a></li><li class="toc-level-2" data-toc-parent="使用示例"><a href="#使用示例" data-toc-link="使用示例" data-toc-depth="2">使用示例</a></li><li class="toc-level-3" data-toc-parent="使用示例"><a href="#保存重要决策" data-toc-link="保存重要决策" data-toc-depth="3">保存重要决策</a></li><li class="toc-level-3" data-toc-parent="使用示例"><a href="#回忆之前的上下文" data-toc-link="回忆之前的上下文" data-toc-depth="3">回忆之前的上下文</a></li><li class="toc-level-3" data-toc-parent="使用示例"><a href="#查看文件历史" data-toc-link="查看文件历史" data-toc-depth="3">查看文件历史</a></li><li class="toc-level-2" data-toc-parent="上下文注入机制"><a href="#上下文注入机制" data-toc-link="上下文注入机制" data-toc-depth="2">上下文注入机制</a></li><li class="toc-level-2" data-toc-parent="两种模式对比"><a href="#两种模式对比" data-toc-link="两种模式对比" data-toc-depth="2">两种模式对比</a></li><li class="toc-level-2" data-toc-parent="混合使用"><a href="#混合使用" data-toc-link="混合使用" data-toc-depth="2">混合使用</a></li><li class="toc-level-2" data-toc-parent="进阶配置"><a href="#进阶配置" data-toc-link="进阶配置" data-toc-depth="2">进阶配置</a></li><li class="toc-level-3" data-toc-parent="进阶配置"><a href="#使用本地嵌入推荐免费" data-toc-link="使用本地嵌入推荐免费" data-toc-depth="3">使用本地嵌入（推荐，免费）</a></li><li class="toc-level-3" data-toc-parent="进阶配置"><a href="#启用知识图谱" data-toc-link="启用知识图谱" data-toc-depth="3">启用知识图谱</a></li><li class="toc-level-3" data-toc-parent="进阶配置"><a href="#修改记忆保留策略" data-toc-link="修改记忆保留策略" data-toc-depth="3">修改记忆保留策略</a></li><li class="toc-level-3" data-toc-parent="进阶配置"><a href="#数据备份" data-toc-link="数据备份" data-toc-depth="3">数据备份</a></li><li class="toc-level-3" data-toc-parent="进阶配置"><a href="#从-standalone-迁移到完整服务器" data-toc-link="从-standalone-迁移到完整服务器" data-toc-depth="3">从 Standalone 迁移到完整服务器</a></li><li class="toc-level-2" data-toc-parent="故障排除"><a href="#故障排除" data-toc-link="故障排除" data-toc-depth="2">故障排除</a></li><li class="toc-level-3" data-toc-parent="故障排除"><a href="#服务器无法连接" data-toc-link="服务器无法连接" data-toc-depth="3">服务器无法连接</a></li><li class="toc-level-3" data-toc-parent="故障排除"><a href="#mcp-工具不可用" data-toc-link="mcp-工具不可用" data-toc-depth="3">MCP 工具不可用</a></li><li class="toc-level-3" data-toc-parent="故障排除"><a href="#插件不工作" data-toc-link="插件不工作" data-toc-depth="3">插件不工作</a></li><li class="toc-level-3" data-toc-parent="故障排除"><a href="#standalone-模式记忆丢失" data-toc-link="standalone-模式记忆丢失" data-toc-depth="3">Standalone 模式记忆丢失</a></li><li class="toc-level-2" data-toc-parent="总结"><a href="#总结" data-toc-link="总结" data-toc-depth="2">总结</a></li><li class="toc-level-2" data-toc-parent="相关文章"><a href="#相关文章" data-toc-link="相关文章" data-toc-depth="2">相关文章</a></li><li class="toc-level-2" data-toc-parent="参考资源"><a href="#参考资源" data-toc-link="参考资源" data-toc-depth="2">参考资源</a></li></ol></nav><script type="module">function f(){const c=document.querySelector(".toc");if(!c)return;const a=c.querySelectorAll("[data-toc-link]");if(!a.length)return;const s=c.querySelectorAll("li[data-toc-parent]"),i=new Map;a.forEach(t=>{const n=t.dataset.tocLink;n&&i.set(n,t)});const d=new Map;s.forEach(t=>{const e=t.querySelector("[data-toc-link]")?.dataset.tocLink,o=t.dataset.tocParent;e&&o&&d.set(e,o)});const r=Array.from(i.keys()).map(t=>document.getElementById(t)).filter(t=>t!==null);if(!r.length)return;function l(t){const n=d.get(t)??t;a.forEach(e=>e.dataset.tocLink===t?e.setAttribute("data-active","true"):e.removeAttribute("data-active")),s.forEach(e=>{const o=e.querySelector("[data-toc-link]"),g=parseInt(o?.dataset.tocDepth??"2",10),u=e.dataset.tocParent??"";g===2?e.dataset.sectionActive=u===n?"current":"true":e.dataset.sectionActive=u===n?"true":"false"})}r.length&&l(r[0].id);const p=new IntersectionObserver(t=>{const n=t.filter(e=>e.isIntersecting).sort((e,o)=>e.boundingClientRect.top-o.boundingClientRect.top);n.length&&l(n[0].target.id)},{rootMargin:"-80px 0px -70% 0px",threshold:0});r.forEach(t=>p.observe(t))}f();document.addEventListener("astro:page-load",f);</script> </aside> </div> </div> </div> <button type="button" class="back-to-top" aria-label="Back to top" data-back-to-top> <svg width="18" height="18" data-icon="lucide:arrow-up">   <symbol id="ai:lucide:arrow-up" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l7-7l7 7m-7 7V5"/></symbol><use href="#ai:lucide:arrow-up"></use>  </svg> </button> <script type="module">function s(){const o=document.querySelector("[data-back-to-top]");if(!o)return;const e=o;function t(){window.scrollY>320?e.classList.add("is-visible"):e.classList.remove("is-visible")}e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})}),window.addEventListener("scroll",t,{passive:!0}),t()}s();document.addEventListener("astro:page-load",s);</script> </body></html>  <script>(function(){const links = {"zh":"/posts/ai/opencode-agentmemory/"};
+
+  window.__chirpyTranslations = links;
+})();</script>

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" fill="none">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="50%" style="stop-color:#1e293b"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </linearGradient>
+    <linearGradient id="phoneGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#334155"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <linearGradient id="notificationGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4"/>
+      <stop offset="100%" style="stop-color:#3b82f6"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="800" height="400" fill="url(#bgGradient)"/>
+  <circle cx="120" cy="100" r="80" fill="#06b6d4" opacity="0.15"/>
+  <circle cx="680" cy="300" r="100" fill="#3b82f6" opacity="0.12"/>
+  <circle cx="400" cy="350" r="60" fill="#22d3ee" opacity="0.08"/>
+  <rect x="310" y="50" width="180" height="360" rx="28" fill="url(#phoneGradient)" stroke="#475569" stroke-width="2"/>
+  <rect x="325" y="70" width="150" height="330" rx="12" fill="#0f172a"/>
+  <rect x="380" y="42" width="40" height="5" rx="3" fill="#1e293b"/>
+  <rect x="335" y="80" width="130" height="230" rx="6" fill="#1e293b"/>
+  <rect x="340" y="85" width="120" height="18" rx="4" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+  <circle cx="350" cy="94" r="4" fill="#ef4444"/>
+  <rect x="358" y="91" width="50" height="6" rx="2" fill="#475569"/>
+  <g transform="translate(345, 115)">
+    <rect x="0" y="0" width="110" height="40" rx="6" fill="#3b82f6" opacity="0.9"/>
+    <text x="55" y="16" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="10" font-weight="600">Bark Notification</text>
+    <text x="55" y="32" text-anchor="middle" fill="#e0e7ff" font-family="system-ui, sans-serif" font-size="9">New message received</text>
+  </g>
+  <g transform="translate(345, 160)">
+    <rect x="0" y="0" width="95" height="35" rx="5" fill="#06b6d4" opacity="0.9"/>
+    <text x="47" y="14" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="9" font-weight="600">Server Alert</text>
+    <text x="47" y="28" text-anchor="middle" fill="#a5f3fc" font-family="system-ui, sans-serif" font-size="8">Push successful!</text>
+  </g>
+  <g transform="translate(345, 200)">
+    <rect x="0" y="0" width="100" height="38" rx="5" fill="#22d3ee" opacity="0.85"/>
+    <text x="50" y="15" text-anchor="middle" fill="#0f172a" font-family="system-ui, sans-serif" font-size="9" font-weight="600">System Update</text>
+    <text x="50" y="30" text-anchor="middle" fill="#0e4455" font-family="system-ui, sans-serif" font-size="8">Bark Server v2.1.8</text>
+  </g>
+  <g transform="translate(80, 200)">
+    <circle cx="25" cy="25" r="25" fill="#06b6d4" filter="url(#softGlow)"/>
+    <circle cx="25" cy="25" r="18" fill="#0f172a"/>
+    <path d="M20 25 L25 18 L30 25 L25 32 Z" fill="#06b6d4"/>
+    <text x="25" y="58" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Push</text>
+  </g>
+  <g transform="translate(150, 280)">
+    <rect x="0" y="0" width="70" height="28" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <circle cx="12" cy="14" r="6" fill="#22d3ee"/>
+    <rect x="24" y="8" width="16" height="3" rx="1" fill="#94a3b8"/>
+    <rect x="24" y="15" width="12" height="3" rx="1" fill="#64748b"/>
+  </g>
+  <g transform="translate(600, 120)">
+    <circle cx="30" cy="30" r="30" fill="#3b82f6" filter="url(#softGlow)"/>
+    <circle cx="30" cy="30" r="22" fill="#0f172a"/>
+    <path d="M22 30 L28 24 L38 24 L30 32 L38 40 L28 40 Z" fill="#3b82f6"/>
+    <text x="30" y="72" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Server</text>
+  </g>
+  <circle cx="700" cy="180" r="8" fill="#ef4444" filter="url(#glow)"/>
+  <circle cx="695" cy="180" r="3" fill="#fff"/>
+  <path d="M710 180 L725 180 M717 173 L725 180 L717 187" stroke="#ef4444" stroke-width="2" fill="none" filter="url(#glow)"/>
+  <circle cx="730" cy="220" r="6" fill="#22d3ee" filter="url(#glow)"/>
+  <circle cx="726" cy="220" r="2" fill="#fff"/>
+  <path d="M738 220 L748 220 M742 215 L748 220 L742 225" stroke="#22d3ee" stroke-width="1.5" fill="none" filter="url(#glow)"/>
+  <text x="400" y="368" text-anchor="middle" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="26" font-weight="700">iPhone Push Notifications</text>
+  <text x="400" y="392" text-anchor="middle" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="14">Bark Server · Real-time Messaging</text>
+</svg>
